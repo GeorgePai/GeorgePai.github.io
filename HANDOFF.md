@@ -83,6 +83,7 @@
 - 回滾：main 退回前一個 deploy commit 再推（先問 Pai）。
 
 ## 部署紀錄
+- 2026-11-26：AlphaPotato main ← release（V4.7，Google 登入建立帳號；Google 已改正式版後 Pai 說上架）。
 - 2026-11-26：隱私權政策更新（Pai OK）：加入 Google 帳號編號與 email、Google API 服務使用者資料政策（有限使用）、Google 帳號不會因久沒上線被刪。網址 /privacy/ 不可改（已填進 Google 登入同意畫面）。
 - 2026-11-25：AlphaPotato main ← release（V4.6，訪客雲端存檔，Pai 說 OK 上架），commit 646a2ee；隱私權政策頁 /privacy/ 同時上線，首頁底部加連結。
 - 2026-11-25：AlphaPotato main ← release（V4.4，補上 game.json），commit 1e56506。
@@ -97,7 +98,7 @@
 - 2026-11-25：買 potatopai.com；網站與遊戲上線到 Cloudflare（Worker potatopai-site、alphapotato）；pp-stats 允許新網域。
 
 ## 待 Pai 決定 / 待辦
-- 帳號第一階段（訪客雲端存檔）已隨 V4.6 上線；第二階段 Google 登入由遊戲開發做，上線前網站管理要更新隱私權政策。
+- 帳號：第一階段訪客雲端存檔（V4.6）、第二階段 Google 登入（V4.7）都已上線；隱私權政策已含 Google 說明。之後可選：首頁顯示登入狀態。
 - 隱私權政策「聯絡我們」：等 Pai 給 email 再補。
 - 之後可選：首頁顯示登入狀態。
 - VPS 壓力測試：先等等。Workers Paid：每日請求接近 5 萬次再提醒 Pai。
