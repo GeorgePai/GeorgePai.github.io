@@ -4,193 +4,247 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Potato Pai</title>
-<meta name="description" content="Potato Pai 的小遊戲們">
-<meta name="theme-color" content="#0a0a0a">
-<link rel="icon" type="image/png" href="assets/icon-32.png">
-<link rel="apple-touch-icon" href="assets/icon-180.png">
-<link rel="preload" href="assets/cubic11.woff2" as="font" type="font/woff2" crossorigin>
+<meta name="description" content="Potato Pai：打開瀏覽器就能玩的像素遊戲。">
+<meta name="theme-color" content="#0b0b0c">
+<meta property="og:title" content="Potato Pai">
+<meta property="og:image" content="https://potatopai.com/games/alphapotato/poster.jpg">
+<link rel="icon" type="image/png" href="/assets/icon-32.png">
+<link rel="apple-touch-icon" href="/assets/icon-180.png">
+<link rel="preload" href="/assets/lilita-one.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/cubic11.woff2" as="font" type="font/woff2" crossorigin>
 <style>
-@font-face{font-family:Cubic11;src:url(assets/cubic11.woff2) format("woff2");font-display:swap}
+@font-face{font-family:Cubic11;src:url(/assets/cubic11.woff2) format("woff2");font-display:swap}
+@font-face{font-family:"Lilita One";src:url(/assets/lilita-one.woff2) format("woff2");font-display:swap}
 :root{
-  --bg:#0a0a0a;--panel:#151515;--panel2:#1d1d1d;--line:#3a3a3a;--line2:#5f5b52;
-  --text:#eeeeee;--muted:#a19b8b;--potato:#e3d3ae;--potato2:#bab4a2;--soil:#4d4a43;--on:#7ad66f;
-  --u:4px;
+  --ink:#0b0b0c;--ink2:#131315;--paper:#f3efe6;--mute:#8d887d;--mute2:#55524b;
+  --line:rgba(243,239,230,.09);--line2:rgba(243,239,230,.18);--gold:#e8d6a6;--on:#7fd36f;
+  --sans:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,"Helvetica Neue",Arial,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;
+  --pixel:Cubic11,var(--sans);
+  --pad:clamp(20px,5vw,64px);
+  --card:min(86vw,720px);
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Cubic11,"PingFang TC","Noto Sans TC",system-ui,sans-serif;
-  font-size:16px;line-height:1.5;min-height:100vh;overflow-wrap:anywhere;word-break:normal;
-  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
-img{image-rendering:pixelated;image-rendering:crisp-edges}
-.wrap{max-width:1040px;margin:0 auto;padding:28px 16px 40px}
+body{margin:0;min-height:100svh;display:flex;flex-direction:column;background:var(--ink);color:var(--paper);font-family:var(--sans);
+  overflow-wrap:anywhere;-webkit-font-smoothing:antialiased;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+img,video{display:block;max-width:100%}
+a{color:inherit}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.05;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
 
-/* header */
-header{display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;margin-bottom:28px}
-.logo{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
-.logo img{width:48px;height:48px;border:3px solid var(--potato);background:var(--panel)}
-h1{margin:0;font-size:40px;line-height:1.1;font-weight:normal;letter-spacing:2px;color:var(--potato);text-shadow:4px 4px 0 var(--soil)}
-.sub{margin:0;color:var(--muted);font-size:15px}
-.stat{display:inline-flex;align-items:center;gap:10px;padding:8px 14px;border:3px solid var(--line);background:var(--panel);font-size:15px;max-width:100%}
-.stat b{font-weight:normal;color:var(--potato)}
+/* 標題 */
+header{padding:clamp(48px,11vh,120px) var(--pad) clamp(28px,5vh,56px);max-width:1440px;width:100%;margin:0 auto}
+/* RPG 風標題：粗黑框＋金色漸層＋立體陰影＋流動光澤 */
+.logo{position:relative;display:inline-block;margin:0;isolation:isolate;font-family:"Lilita One",var(--sans);font-weight:400;
+  font-size:clamp(58px,15vw,156px);line-height:1;letter-spacing:.015em;white-space:nowrap}
+.logo::before,.logo::after,.logo .fill,.logo .fill::after{padding:.06em .08em .16em}
+/* 外圈：琥珀色邊＋微光＋立體厚度 */
+.logo::before{content:attr(data-text);position:absolute;inset:0;z-index:0;color:#a8691f;
+  -webkit-text-stroke:.27em #a8691f;text-shadow:0 .1em 0 #5c3a12,0 0 .45em rgba(255,178,64,.28)}
+/* 內圈：粗黑框 */
+.logo::after{content:attr(data-text);position:absolute;inset:0;z-index:0;color:#120b04;-webkit-text-stroke:.16em #120b04}
+.logo .fill{position:relative;z-index:1;display:inline-block;color:transparent;
+  background:linear-gradient(180deg,#fff0b3 0%,#ffd55c 34%,#f6a632 62%,#dd7a1f 82%,#b4521a 100%);-webkit-background-clip:text;background-clip:text}
+.logo .fill::after{content:attr(data-text);position:absolute;inset:0;color:transparent;pointer-events:none;
+  background:linear-gradient(110deg,transparent 0 38%,rgba(255,255,255,.15) 42%,rgba(255,255,255,.95) 48%,rgba(255,255,255,.95) 51%,rgba(255,255,255,.15) 57%,transparent 61%) no-repeat;
+  background-size:260% 100%;background-position:170% 0;-webkit-background-clip:text;background-clip:text;animation:sheen 5.5s ease-in-out 1s infinite}
+@keyframes sheen{0%{background-position:170% 0}45%,100%{background-position:-70% 0}}
+@media (prefers-reduced-motion:reduce){.logo .fill::after{animation:none;opacity:0}}
 
-/* list */
-h2{margin:0 0 14px;font-size:18px;font-weight:normal;color:var(--muted);text-align:center}
-h2::before,h2::after{content:"■";color:var(--potato2);font-size:10px;vertical-align:middle;margin:0 10px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),360px));gap:20px;justify-content:center}
+/* 遊戲卡片：左右滑動 */
+.rail-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 var(--pad) 14px;max-width:1440px;width:100%;margin:0 auto;min-height:58px}
+.count{font-family:var(--pixel);font-size:13px;color:var(--mute);letter-spacing:.06em}
+.count b{font-weight:normal;color:var(--paper)}
+.arrows{display:flex;gap:10px}
+.arrow{width:44px;height:44px;border-radius:50%;border:1px solid var(--line2);background:transparent;color:var(--paper);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .2s,opacity .2s}
+.arrow:hover{border-color:rgba(243,239,230,.45)}
+.arrow:disabled{opacity:.25;cursor:default}
+.arrow svg{width:14px;height:14px}
+.rail{display:flex;gap:clamp(14px,2vw,24px);overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:var(--pad);
+  padding:0 var(--pad) 8px;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+.rail::-webkit-scrollbar{display:none}
+.rail::after{content:"";flex:0 0 1px}
+.card{flex:0 0 var(--card);scroll-snap-align:start;display:flex;flex-direction:column;border-radius:20px;overflow:hidden;background:var(--ink2);border:1px solid var(--line)}
+.media{position:relative;display:block;aspect-ratio:16/9;background:#000;overflow:hidden}
+.media img,.media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;image-rendering:pixelated}
+.media video{opacity:0;transition:opacity .5s}
+.media video.ready{opacity:1}
+.body{display:grid;gap:14px;padding:clamp(18px,2.4vw,26px);flex:1;align-content:start}
+.name{margin:0;font-size:clamp(24px,3vw,32px);line-height:1.1;font-weight:800;letter-spacing:-.02em}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tag{font-family:var(--pixel);font-size:12px;line-height:1;padding:7px 11px;border-radius:999px;border:1px solid var(--line2);color:#d6d0c4;white-space:nowrap}
+.tag .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--mute2);margin-right:6px;vertical-align:1px}
+.tag .dot.on{background:var(--on)}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{display:flex;align-items:center;justify-content:center;gap:9px;min-height:50px;padding:8px 14px;border-radius:999px;font:inherit;font-size:15px;font-weight:600;
+  text-decoration:none;cursor:pointer;border:1px solid transparent;white-space:nowrap;transition:transform .15s,background .2s,border-color .2s}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:var(--gold);color:#16130c}
+.btn.primary:hover{background:#f4e6bf}
+.btn.ghost{background:transparent;color:var(--paper);border-color:var(--line2)}
+.btn.ghost:hover{border-color:rgba(243,239,230,.45)}
+.btn svg{width:11px;height:11px;flex:none}
+.card.soon{border-style:dashed}
+.soon .media{display:flex;align-items:center;justify-content:center;background:repeating-linear-gradient(135deg,#121214 0 12px,#0f0f11 12px 24px)}
+.soon .media span{font-family:var(--pixel);font-size:13px;color:var(--mute2);letter-spacing:.12em}
+.soon .name{color:#6f6b62}
+.dots{display:flex;justify-content:center;gap:8px;padding:18px 0 0}
+.dots i{width:6px;height:6px;border-radius:50%;background:var(--mute2);transition:background .2s,width .2s}
+.dots i.on{background:var(--paper);width:18px;border-radius:3px}
 
-.card{position:relative;display:flex;flex-direction:column;gap:14px;padding:16px;background:var(--panel);border:3px solid var(--line);
-  box-shadow:var(--u) var(--u) 0 #000;cursor:pointer;outline:none;transition:transform .08s,border-color .08s}
-.card:hover,.card:focus-visible{border-color:var(--potato2)}
-.card:active{transform:translate(2px,2px);box-shadow:2px 2px 0 #000}
-.top{display:grid;grid-template-columns:76px 1fr;gap:14px;align-items:start}
-.icon{width:76px;height:76px;border:3px solid var(--potato2);background:#000;display:block}
-.name{margin:0;font-size:22px;line-height:1.2;color:var(--text);font-weight:normal}
-.tag{display:inline-block;margin-top:6px;padding:2px 8px;font-size:13px;color:#0a0a0a;background:var(--potato)}
-.desc{margin:0;color:#cfcac0;font-size:15px}
-.meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.meta div{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:8px 4px;background:var(--panel2);border:2px solid var(--line);text-align:center;min-width:0}
-.meta span{font-size:12px;color:var(--muted)}
-.meta b{font-weight:normal;font-size:16px;color:var(--text)}
-.dot{display:inline-block;width:8px;height:8px;background:var(--on);margin-right:6px;vertical-align:middle;animation:blink 2s steps(2) infinite}
-.dot.off{background:var(--soil);animation:none}
-@keyframes blink{50%{opacity:.35}}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.btn{display:flex;align-items:center;justify-content:center;min-height:48px;padding:8px 10px;font:inherit;font-size:17px;text-align:center;text-decoration:none;
-  border:3px solid #000;box-shadow:3px 3px 0 #000;cursor:pointer}
-.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #000}
-.play{background:var(--potato);color:#0a0a0a}
-.play:hover{background:#f0e3c4}
-.more{background:var(--panel2);color:var(--text);border-color:var(--line)}
-.more:hover{border-color:var(--potato2)}
-
-footer{margin-top:36px;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:4px 12px;text-align:center;color:#5f5b52;font-size:13px;line-height:1.4}
-.cr{display:inline-flex;align-items:center;gap:5px}
+footer{margin-top:auto;padding:clamp(40px,8vh,80px) var(--pad) 28px;max-width:1440px;width:100%;margin-left:auto;margin-right:auto;
+  display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 24px;color:var(--mute);font-size:13px}
+footer .px{font-family:var(--pixel)}
+.cr{display:inline-flex;align-items:center;gap:6px}
 .copy{width:9px;height:9px;flex:none}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 
-/* notes modal */
-.mask{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;padding:20px;z-index:10}
+/* 更新內容 */
+.mask{position:fixed;inset:0;z-index:60;background:rgba(5,5,6,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:none;align-items:flex-end;justify-content:center;padding:16px}
 .mask.show{display:flex}
-.modal{width:100%;max-width:440px;max-height:calc(100vh - 40px);overflow:auto;background:var(--panel);border:3px solid var(--potato2);box-shadow:6px 6px 0 #000;padding:18px}
-.modal h3{margin:0 0 4px;font-size:20px;font-weight:normal;color:var(--potato)}
-.modal .when{margin:0 0 12px;color:var(--muted);font-size:14px}
-.modal ul{margin:0 0 16px;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
-.modal li{position:relative;padding-left:18px;font-size:15px}
-.modal li::before{content:"";position:absolute;left:0;top:.55em;width:8px;height:8px;background:var(--potato)}
-.modal .actions{margin-top:4px}
+.sheet{width:100%;max-width:520px;max-height:calc(100svh - 32px);overflow:auto;background:var(--ink2);border:1px solid var(--line2);border-radius:20px;padding:24px 22px 22px}
+.sheet h3{margin:0 0 2px;font-size:22px;font-weight:800}
+.sheet .when{margin:0 0 16px;font-family:var(--pixel);font-size:13px;color:var(--mute)}
+.sheet ul{margin:0 0 20px;padding:0;list-style:none;display:grid;gap:12px}
+.sheet li{position:relative;padding-left:18px;color:#ddd8cd;font-size:15px;line-height:1.6}
+.sheet li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--gold)}
 
-@media (min-width:700px){h1{font-size:48px}.wrap{padding-top:44px}}
-@media (prefers-reduced-motion:reduce){.dot{animation:none}}
+@media (max-width:760px){.arrows{display:none}}
+@media (min-width:761px){.mask{align-items:center}.dots{display:none}}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <div class="logo"><img src="assets/icon-180.png" alt=""><h1>Potato Pai</h1></div>
-    <p class="sub">Pai 做的小遊戲，打開就能玩</p>
-    <div class="stat">網站瀏覽 <b id="views">—</b> 次</div>
-  </header>
+<header><h1 class="logo" data-text="Potato Pai"><span class="fill" data-text="Potato Pai">Potato Pai</span></h1></header>
 
-  <h2>遊戲</h2>
-  <main class="grid" id="list"></main>
+<main>
+  <div class="rail-head">
+    <span class="count" id="count"></span>
+    <div class="arrows">
+      <button class="arrow" id="prev" type="button" aria-label="上一款"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M9 2L4 7l5 5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button>
+      <button class="arrow" id="next" type="button" aria-label="下一款"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M5 2l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button>
+    </div>
+  </div>
+  <div class="rail" id="rail" aria-label="遊戲"></div>
+  <div class="dots" id="dots" aria-hidden="true"></div>
+</main>
 
-  <footer><span class="cr"><svg class="copy" viewBox="0 0 9 9" aria-hidden="true" shape-rendering="crispEdges" fill="currentColor"><rect x="2" y="0" width="1" height="1"/><rect x="3" y="0" width="1" height="1"/><rect x="4" y="0" width="1" height="1"/><rect x="5" y="0" width="1" height="1"/><rect x="6" y="0" width="1" height="1"/><rect x="1" y="1" width="1" height="1"/><rect x="7" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="3" y="2" width="1" height="1"/><rect x="4" y="2" width="1" height="1"/><rect x="5" y="2" width="1" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="8" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="2" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="2" y="5" width="1" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="3" y="6" width="1" height="1"/><rect x="4" y="6" width="1" height="1"/><rect x="5" y="6" width="1" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="1" y="7" width="1" height="1"/><rect x="7" y="7" width="1" height="1"/><rect x="2" y="8" width="1" height="1"/><rect x="3" y="8" width="1" height="1"/><rect x="4" y="8" width="1" height="1"/><rect x="5" y="8" width="1" height="1"/><rect x="6" y="8" width="1" height="1"/></svg><span class="sr">©</span> 2026 Potato Pai</span><span class="cr">保留所有權利</span></footer>
-</div>
+<footer>
+  <span class="cr"><svg class="copy" viewBox="0 0 9 9" aria-hidden="true" shape-rendering="crispEdges" fill="currentColor"><path d="M2 0h5v1H2zM1 1h1v1H1zM7 1h1v1H7zM0 2h1v5H0zM8 2h1v5H8zM3 2h3v1H3zM2 3h1v3H2zM3 6h3v1H3zM1 7h1v1H1zM7 7h1v1H7zM2 8h5v1H2z"/></svg><span class="sr">©</span> 2026 Potato Pai　保留所有權利</span>
+  <span class="px">瀏覽 <b id="views">—</b> 次</span>
+</footer>
 
 <div class="mask" id="mask" role="dialog" aria-modal="true" aria-labelledby="mTitle">
-  <div class="modal">
+  <div class="sheet">
     <h3 id="mTitle"></h3>
     <p class="when" id="mWhen"></p>
     <ul id="mNotes"></ul>
-    <div class="actions"><button class="btn more" id="mClose" type="button">關閉</button><a class="btn play" id="mPlay" href="#">開始玩</a></div>
+    <div class="btns"><button class="btn ghost" id="mClose" type="button">關閉</button><a class="btn primary" id="mPlay" href="#">開始玩</a></div>
   </div>
 </div>
 
 <script>
-// 瀏覽人數伺服器（pp-stats）。建好後填入網址，例如 https://pp-stats.xxx.workers.dev
-const STATS_URL = "https://pp-stats.leafoflegends.workers.dev";
+const STATS_URL = "https://pp-stats.alphapotato.workers.dev";
 const ONLINE_EVERY = 30000;
-
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+const calm = matchMedia("(prefers-reduced-motion: reduce)").matches || !!(navigator.connection && navigator.connection.saveData);
+const play = `<svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z" fill="currentColor"/></svg>`;
 let games = [];
 
+const tagsOf = g => String(g.tag || "").split(/\s*[×x\/、]\s*/).filter(Boolean);
 function card(g, i){
-  return `<article class="card" tabindex="0" data-i="${i}" aria-label="${esc(g.name)}：查看本版更新內容">
-    <div class="top">
-      <img class="icon" src="${esc(g.icon)}" alt="" width="76" height="76">
-      <div><h3 class="name">${esc(g.name)}</h3><span class="tag">${esc(g.tag)}</span></div>
-    </div>
-    <p class="desc">${esc(g.desc)}</p>
-    <div class="meta">
-      <div><span>版本</span><b>${esc(g.version)}</b></div>
-      <div><span>更新</span><b>${esc(g.date)}</b></div>
-      <div><span>在線</span><b><i class="dot off" data-dot="${i}"></i><em style="font-style:normal" data-on="${i}">—</em></b></div>
-    </div>
-    <div class="actions">
-      <button class="btn more" type="button" data-notes="${i}">更新內容</button>
-      <a class="btn play" href="${esc(g.path)}">開始玩</a>
+  const m = g.media || {};
+  const vid = !calm && (m.mp4 || m.webm) ? `<video muted loop playsinline preload="none" ${m.poster ? `poster="${esc(m.poster)}"` : ""}>${m.webm ? `<source src="${esc(m.webm)}" type="video/webm">` : ""}${m.mp4 ? `<source src="${esc(m.mp4)}" type="video/mp4">` : ""}</video>` : "";
+  return `<article class="card" data-i="${i}">
+    <a class="media" href="${esc(g.path)}" aria-label="開始玩 ${esc(g.name)}">${m.poster ? `<img src="${esc(m.poster)}" alt="" ${i ? 'loading="lazy"' : ""}>` : ""}${vid}</a>
+    <div class="body">
+      <h2 class="name">${esc(g.name)}</h2>
+      <div class="tags">${tagsOf(g).map(t => `<span class="tag">${esc(t)}</span>`).join("")}<span class="tag">${esc(g.version)}</span><span class="tag" data-on="${i}"><i class="dot"></i>— 人在線</span></div>
+      <div class="btns"><a class="btn primary" href="${esc(g.path)}">${play}開始玩</a><button class="btn ghost" type="button" data-notes="${i}">更新內容</button></div>
     </div>
   </article>`;
 }
+const soon = `<article class="card soon" aria-hidden="true"><div class="media"><span>NEXT GAME</span></div><div class="body"><h2 class="name">製作中</h2><div class="tags"><span class="tag">敬請期待</span></div></div></article>`;
+
+// 只播放畫面中那張卡片的影片
+const vio = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => {
+  const v = e.target.querySelector("video"); if (!v) return;
+  if (e.isIntersecting && !document.hidden) { if (v.preload === "none") { v.preload = "auto"; v.load(); } v.play().catch(()=>{}); }
+  else v.pause();
+}), {threshold: .6}) : null;
+
+const rail = $("#rail");
+const cards = () => [...rail.querySelectorAll(".card")];
+function current(){
+  const cs = cards(); if (!cs.length) return 0;
+  const x = rail.scrollLeft, base = cs[0].offsetLeft; let best = 0, d = 1e9;
+  cs.forEach((c, i) => { const dd = Math.abs(c.offsetLeft - base - x); if (dd < d) { d = dd; best = i; } });
+  if (rail.scrollLeft + rail.clientWidth >= rail.scrollWidth - 2) best = cs.length - 1;
+  return best;
+}
+function sync(){
+  const n = cards().length, i = current();
+  $("#count").innerHTML = `<b>${String(i + 1).padStart(2, "0")}</b> / ${String(n).padStart(2, "0")}`;
+  $("#prev").disabled = rail.scrollLeft <= 2;
+  $("#next").disabled = rail.scrollLeft + rail.clientWidth >= rail.scrollWidth - 2;
+  [...$("#dots").children].forEach((d, k) => d.classList.toggle("on", k === i));
+}
+function go(dir){ const cs = cards(); const i = Math.max(0, Math.min(cs.length - 1, current() + dir)); rail.scrollTo({left: cs[i].offsetLeft - cs[0].offsetLeft, behavior: "smooth"}); }
+$("#prev").onclick = () => go(-1); $("#next").onclick = () => go(1);
+rail.addEventListener("scroll", () => requestAnimationFrame(sync), {passive: true});
+addEventListener("resize", sync);
 
 function openNotes(i){
-  const g = games[i]; if(!g) return;
+  const g = games[i]; if (!g) return;
   $("#mTitle").textContent = `${g.name} ${g.version}`;
   $("#mWhen").textContent = `更新日期 ${g.date}`;
   $("#mNotes").innerHTML = (g.notes || []).map(n => `<li>${esc(n)}</li>`).join("") || "<li>這版沒有更新說明</li>";
   $("#mPlay").href = g.path;
-  $("#mask").classList.add("show");
-  $("#mClose").focus();
+  $("#mask").classList.add("show"); $("#mClose").focus();
 }
-function closeNotes(){ $("#mask").classList.remove("show"); }
-
-async function pollOnline(){
-  if (document.hidden) return;
-  await Promise.all(games.map(async (g, i) => {
-    const el = document.querySelector(`[data-on="${i}"]`), dot = document.querySelector(`[data-dot="${i}"]`);
-    if (!g.online || !el) return;
-    try{
-      const r = await fetch(g.online, {cache:"no-store"});
-      const j = await r.json();
-      if (j && j.ok && Number.isFinite(+j.n)){ el.textContent = `${+j.n} 人`; dot.classList.toggle("off", +j.n === 0); }
-      else throw 0;
-    }catch(e){ el.textContent = "—"; dot.classList.add("off"); }
-  }));
-}
-let timer = null;
-function startPolling(){ clearInterval(timer); pollOnline(); timer = setInterval(pollOnline, ONLINE_EVERY); }
-document.addEventListener("visibilitychange", () => { if (document.hidden) clearInterval(timer); else startPolling(); });
-
-async function views(){
-  if (!STATS_URL) return;               // 伺服器還沒建好：顯示「—」
-  const KEY = "pp_last_hit", now = Date.now();
-  let last = 0; try{ last = +localStorage.getItem(KEY) || 0; }catch(e){}
-  const hit = now - last > 30*60*1000;   // 同一裝置 30 分鐘內只算一次
-  try{
-    const r = await fetch(STATS_URL + (hit ? "/hit" : "/stats"), {method: hit ? "POST" : "GET"});
-    const j = await r.json();
-    if (Number.isFinite(+j.views)) $("#views").textContent = (+j.views).toLocaleString("zh-TW");
-    if (hit) try{ localStorage.setItem(KEY, String(now)); }catch(e){}
-  }catch(e){}
-}
-
-$("#list").addEventListener("click", e => {
-  if (e.target.closest("a.play")) return;
-  const c = e.target.closest(".card"); if (c) openNotes(+c.dataset.i);
-});
-$("#list").addEventListener("keydown", e => {
-  if ((e.key === "Enter" || e.key === " ") && e.target.classList.contains("card")){ e.preventDefault(); openNotes(+e.target.dataset.i); }
-});
+const closeNotes = () => $("#mask").classList.remove("show");
+rail.addEventListener("click", e => { const b = e.target.closest("[data-notes]"); if (b) openNotes(+b.dataset.notes); });
 $("#mClose").onclick = closeNotes;
 $("#mask").addEventListener("click", e => { if (e.target.id === "mask") closeNotes(); });
 document.addEventListener("keydown", e => { if (e.key === "Escape") closeNotes(); });
 
-fetch("games.json", {cache:"no-store"}).then(r => r.json()).then(d => {
+async function pollOnline(){
+  if (document.hidden) return;
+  await Promise.all(games.map(async (g, i) => {
+    if (!g.online) return; let n = null;
+    try { const j = await (await fetch(g.online, {cache: "no-store"})).json(); if (j && j.ok && Number.isFinite(+j.n)) n = +j.n; } catch (e) {}
+    const el = document.querySelector(`[data-on="${i}"]`); if (el) el.innerHTML = `<i class="dot ${n > 0 ? "on" : ""}"></i>${n == null ? "—" : n} 人在線`;
+  }));
+}
+let timer = null;
+function startPolling(){ clearInterval(timer); pollOnline(); timer = setInterval(pollOnline, ONLINE_EVERY); }
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) { clearInterval(timer); rail.querySelectorAll("video").forEach(v => v.pause()); }
+  else { startPolling(); const c = cards()[current()]; const v = c && c.querySelector("video"); if (v) v.play().catch(()=>{}); }
+});
+
+async function views(){
+  const KEY = "pp_last_hit", now = Date.now(); let last = 0;
+  try { last = +localStorage.getItem(KEY) || 0; } catch (e) {}
+  const hit = now - last > 30*60*1000;
+  try {
+    const j = await (await fetch(STATS_URL + (hit ? "/hit" : "/stats"), {method: hit ? "POST" : "GET"})).json();
+    if (Number.isFinite(+j.views)) $("#views").textContent = (+j.views).toLocaleString("zh-TW");
+    if (hit) try { localStorage.setItem(KEY, String(now)); } catch (e) {}
+  } catch (e) {}
+}
+
+fetch("/games.json", {cache: "no-store"}).then(r => r.json()).then(d => {
   games = d.games || [];
-  $("#list").innerHTML = games.map(card).join("");
-  startPolling();
-}).catch(() => { $("#list").innerHTML = '<p class="desc" style="text-align:center">遊戲清單載入失敗，請重新整理</p>'; });
+  rail.innerHTML = games.map(card).join("") + soon;
+  $("#dots").innerHTML = cards().map(() => "<i></i>").join("");
+  cards().forEach(c => {
+    const v = c.querySelector("video"); if (!v) return;
+    v.addEventListener("playing", () => v.classList.add("ready"), {once: true});
+    if (vio) vio.observe(c);
+  });
+  sync(); startPolling();
+}).catch(() => { rail.innerHTML = '<p style="padding:0 var(--pad);color:var(--mute)">遊戲清單載入失敗，請重新整理。</p>'; });
 views();
 </script>
 </body>
