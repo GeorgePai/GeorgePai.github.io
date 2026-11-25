@@ -36,6 +36,7 @@
 | assets/cubic11.woff2 | 俐方體 11 號（從遊戲 index.html 的 G_FONT 抽出的子集，5658 字；缺字自動用系統字型） |
 | assets/icon-32.png / icon-180.png | 網站 favicon、主畫面圖示（暫用 Alpha Potato 的） |
 | stats/ | 瀏覽人數伺服器 pp-stats（Cloudflare Worker＋D1） |
+| privacy/index.html | 隱私權政策頁（2026-11-25 上線；首頁底部有連結）。內容依 pp-account 實際做法；之後加 Google 登入、補聯絡 email 時要更新 |
 | move/index.html | 一鍵搬存檔頁：在舊網址讀出 ap_ 存檔（不搬 ap_rk_ss、ap_sid、ap_dev、ap_pin、ap_adm），放在網址 # 後面帶到 https://potatopai.com/move/ 寫入；舊網址留備份並寫 ap_moved；新網址已有存檔時要玩家確認 |
 
 設計：極簡深色底＋金色強調（--gold #e8d6a6），小資訊用像素字 Cubic11；上方 RPG 風標題、下方左右滑卡片，只放標籤不放描述句。手機直屏優先，檢查 390×844、360×780、1280×720；文字不可截斷/重疊/超框，並排元件等寬等距等高。
@@ -56,7 +57,7 @@
 - 雲端 shell 連不到 Cloudflare／workers.dev：要看部署或測端點，用桌面 App 內建瀏覽器或 Claude in Chrome。
 
 ## Cloudflare 路由（越精確越優先）
-- potatopai.com/* → potatopai-site；potatopai.com/AlphaPotato* → alphapotato；之後 potatopai.com/api/* → pp-account。其他私人路由記在私人資安備忘。
+- potatopai.com/* → potatopai-site；potatopai.com/AlphaPotato* → alphapotato；potatopai.com/api/* → pp-account（路由寫在 pp-account 自己的 wrangler.toml，遊戲開發維護）。其他私人路由記在私人資安備忘。
 
 ## 長期路線圖（2026-11-25 Pai 同意方向）
 
@@ -82,6 +83,7 @@
 - 回滾：main 退回前一個 deploy commit 再推（先問 Pai）。
 
 ## 部署紀錄
+- 2026-11-25：AlphaPotato main ← release（V4.6，訪客雲端存檔，Pai 說 OK 上架），commit 646a2ee；隱私權政策頁 /privacy/ 同時上線，首頁底部加連結。
 - 2026-11-25：AlphaPotato main ← release（V4.4，補上 game.json），commit 1e56506。
 - 2026-11-25：網站第一版上線；pp-stats 上線，網站開始顯示瀏覽人數。
 - 2026-11-25：AlphaPotato main ← release（V4.5），commit 50928ae；網站 games.json 同步 V4.5。
@@ -94,8 +96,8 @@
 - 2026-11-25：買 potatopai.com；網站與遊戲上線到 Cloudflare（Worker potatopai-site、alphapotato）；pp-stats 允許新網域。
 
 ## 待 Pai 決定 / 待辦
-- 帳號與雲端存檔（遊戲開發實作中）：等遊戲開發在留言板通知 Worker pp-account 建好後，網站管理接 Cloudflare 路由 potatopai.com/api/* → pp-account（pp-account 的 Domains → Add Route）。
-- 隱私權政策頁（網站管理做；寫明存什麼、怎麼刪除；正式上線前先給 Pai 看）。
+- 帳號第一階段（訪客雲端存檔）已隨 V4.6 上線；第二階段 Google 登入由遊戲開發做，上線前網站管理要更新隱私權政策。
+- 隱私權政策「聯絡我們」：等 Pai 給 email 再補。
 - 之後可選：首頁顯示登入狀態。
 - VPS 壓力測試：先等等。Workers Paid：每日請求接近 5 萬次再提醒 Pai。
 - 網站自己的圖示目前沿用 Alpha Potato 圖示，要不要做 Potato Pai 專屬圖示。

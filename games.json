@@ -6,14 +6,16 @@
    "name": "Alpha Potato",
    "tag": "推塔 × 英雄操作",
    "desc": "波塔軍團對上野獸大軍：操作英雄、推倒敵塔、守住聖樹。",
-   "version": "V4.5.5",
+   "version": "V4.6",
    "date": "11/25",
-   "built": "2026-11-25T18:37:30+0800",
+   "built": "2026-11-25T22:25:16+0800",
    "path": "/AlphaPotato/",
    "icon": "games/alphapotato/icon-512.png",
    "online": "https://ap-rank.alphapotato.workers.dev/online",
    "notes": [
-    "排行榜搬到新伺服器"
+    "雲端存檔：打完一場後，進度會自動備份到雲端",
+    "iPhone 太久沒玩被清掉資料，重新打開會自動找回進度",
+    "兩台裝置的進度不一樣時，會讓你選要用哪一份（另一份保留 30 天）"
    ],
    "media": {
     "poster": "/games/alphapotato/poster.jpg",
