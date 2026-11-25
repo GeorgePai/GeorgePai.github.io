@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Potato Pai</title>
+<meta name="description" content="Potato Pai 的小遊戲們">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="icon" type="image/png" href="assets/icon-32.png">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<link rel="preload" href="assets/cubic11.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:Cubic11;src:url(assets/cubic11.woff2) format("woff2");font-display:swap}
+:root{
+  --bg:#0a0a0a;--panel:#151515;--panel2:#1d1d1d;--line:#3a3a3a;--line2:#5f5b52;
+  --text:#eeeeee;--muted:#a19b8b;--potato:#e3d3ae;--potato2:#bab4a2;--soil:#4d4a43;--on:#7ad66f;
+  --u:4px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Cubic11,"PingFang TC","Noto Sans TC",system-ui,sans-serif;
+  font-size:16px;line-height:1.5;min-height:100vh;overflow-wrap:anywhere;word-break:normal;
+  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+img{image-rendering:pixelated;image-rendering:crisp-edges}
+.wrap{max-width:1040px;margin:0 auto;padding:28px 16px 40px}
+
+/* header */
+header{display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;margin-bottom:28px}
+.logo{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
+.logo img{width:48px;height:48px;border:3px solid var(--potato);background:var(--panel)}
+h1{margin:0;font-size:40px;line-height:1.1;font-weight:normal;letter-spacing:2px;color:var(--potato);text-shadow:4px 4px 0 var(--soil)}
+.sub{margin:0;color:var(--muted);font-size:15px}
+.stat{display:inline-flex;align-items:center;gap:10px;padding:8px 14px;border:3px solid var(--line);background:var(--panel);font-size:15px;max-width:100%}
+.stat b{font-weight:normal;color:var(--potato)}
+
+/* list */
+h2{margin:0 0 14px;font-size:18px;font-weight:normal;color:var(--muted);text-align:center}
+h2::before,h2::after{content:"■";color:var(--potato2);font-size:10px;vertical-align:middle;margin:0 10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),360px));gap:20px;justify-content:center}
+
+.card{position:relative;display:flex;flex-direction:column;gap:14px;padding:16px;background:var(--panel);border:3px solid var(--line);
+  box-shadow:var(--u) var(--u) 0 #000;cursor:pointer;outline:none;transition:transform .08s,border-color .08s}
+.card:hover,.card:focus-visible{border-color:var(--potato2)}
+.card:active{transform:translate(2px,2px);box-shadow:2px 2px 0 #000}
+.top{display:grid;grid-template-columns:76px 1fr;gap:14px;align-items:start}
+.icon{width:76px;height:76px;border:3px solid var(--potato2);background:#000;display:block}
+.name{margin:0;font-size:22px;line-height:1.2;color:var(--text);font-weight:normal}
+.tag{display:inline-block;margin-top:6px;padding:2px 8px;font-size:13px;color:#0a0a0a;background:var(--potato)}
+.desc{margin:0;color:#cfcac0;font-size:15px}
+.meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.meta div{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:8px 4px;background:var(--panel2);border:2px solid var(--line);text-align:center;min-width:0}
+.meta span{font-size:12px;color:var(--muted)}
+.meta b{font-weight:normal;font-size:16px;color:var(--text)}
+.dot{display:inline-block;width:8px;height:8px;background:var(--on);margin-right:6px;vertical-align:middle;animation:blink 2s steps(2) infinite}
+.dot.off{background:var(--soil);animation:none}
+@keyframes blink{50%{opacity:.35}}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{display:flex;align-items:center;justify-content:center;min-height:48px;padding:8px 10px;font:inherit;font-size:17px;text-align:center;text-decoration:none;
+  border:3px solid #000;box-shadow:3px 3px 0 #000;cursor:pointer}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #000}
+.play{background:var(--potato);color:#0a0a0a}
+.play:hover{background:#f0e3c4}
+.more{background:var(--panel2);color:var(--text);border-color:var(--line)}
+.more:hover{border-color:var(--potato2)}
+
+footer{margin-top:36px;text-align:center;color:#5f5b52;font-size:13px}
+
+/* notes modal */
+.mask{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;padding:20px;z-index:10}
+.mask.show{display:flex}
+.modal{width:100%;max-width:440px;max-height:calc(100vh - 40px);overflow:auto;background:var(--panel);border:3px solid var(--potato2);box-shadow:6px 6px 0 #000;padding:18px}
+.modal h3{margin:0 0 4px;font-size:20px;font-weight:normal;color:var(--potato)}
+.modal .when{margin:0 0 12px;color:var(--muted);font-size:14px}
+.modal ul{margin:0 0 16px;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+.modal li{position:relative;padding-left:18px;font-size:15px}
+.modal li::before{content:"";position:absolute;left:0;top:.55em;width:8px;height:8px;background:var(--potato)}
+.modal .actions{margin-top:4px}
+
+@media (min-width:700px){h1{font-size:48px}.wrap{padding-top:44px}}
+@media (prefers-reduced-motion:reduce){.dot{animation:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo"><img src="assets/icon-180.png" alt=""><h1>Potato Pai</h1></div>
+    <p class="sub">Pai 做的小遊戲，打開就能玩</p>
+    <div class="stat">網站瀏覽 <b id="views">—</b> 次</div>
+  </header>
+
+  <h2>遊戲</h2>
+  <main class="grid" id="list"></main>
+
+  <footer>Potato Pai · 2026</footer>
+</div>
+
+<div class="mask" id="mask" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="modal">
+    <h3 id="mTitle"></h3>
+    <p class="when" id="mWhen"></p>
+    <ul id="mNotes"></ul>
+    <div class="actions"><button class="btn more" id="mClose" type="button">關閉</button><a class="btn play" id="mPlay" href="#">開始玩</a></div>
+  </div>
+</div>
+
+<script>
+// 瀏覽人數伺服器（pp-stats）。建好後填入網址，例如 https://pp-stats.xxx.workers.dev
+const STATS_URL = "";
+const ONLINE_EVERY = 30000;
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+let games = [];
+
+function card(g, i){
+  return `<article class="card" tabindex="0" data-i="${i}" aria-label="${esc(g.name)}：查看本版更新內容">
+    <div class="top">
+      <img class="icon" src="${esc(g.icon)}" alt="" width="76" height="76">
+      <div><h3 class="name">${esc(g.name)}</h3><span class="tag">${esc(g.tag)}</span></div>
+    </div>
+    <p class="desc">${esc(g.desc)}</p>
+    <div class="meta">
+      <div><span>版本</span><b>${esc(g.version)}</b></div>
+      <div><span>更新</span><b>${esc(g.date)}</b></div>
+      <div><span>在線</span><b><i class="dot off" data-dot="${i}"></i><em style="font-style:normal" data-on="${i}">—</em></b></div>
+    </div>
+    <div class="actions">
+      <button class="btn more" type="button" data-notes="${i}">更新內容</button>
+      <a class="btn play" href="${esc(g.path)}">開始玩</a>
+    </div>
+  </article>`;
+}
+
+function openNotes(i){
+  const g = games[i]; if(!g) return;
+  $("#mTitle").textContent = `${g.name} ${g.version}`;
+  $("#mWhen").textContent = `更新日期 ${g.date}`;
+  $("#mNotes").innerHTML = (g.notes || []).map(n => `<li>${esc(n)}</li>`).join("") || "<li>這版沒有更新說明</li>";
+  $("#mPlay").href = g.path;
+  $("#mask").classList.add("show");
+  $("#mClose").focus();
+}
+function closeNotes(){ $("#mask").classList.remove("show"); }
+
+async function pollOnline(){
+  if (document.hidden) return;
+  await Promise.all(games.map(async (g, i) => {
+    const el = document.querySelector(`[data-on="${i}"]`), dot = document.querySelector(`[data-dot="${i}"]`);
+    if (!g.online || !el) return;
+    try{
+      const r = await fetch(g.online, {cache:"no-store"});
+      const j = await r.json();
+      if (j && j.ok && Number.isFinite(+j.n)){ el.textContent = `${+j.n} 人`; dot.classList.toggle("off", +j.n === 0); }
+      else throw 0;
+    }catch(e){ el.textContent = "—"; dot.classList.add("off"); }
+  }));
+}
+let timer = null;
+function startPolling(){ clearInterval(timer); pollOnline(); timer = setInterval(pollOnline, ONLINE_EVERY); }
+document.addEventListener("visibilitychange", () => { if (document.hidden) clearInterval(timer); else startPolling(); });
+
+async function views(){
+  if (!STATS_URL) return;               // 伺服器還沒建好：顯示「—」
+  const KEY = "pp_last_hit", now = Date.now();
+  let last = 0; try{ last = +localStorage.getItem(KEY) || 0; }catch(e){}
+  const hit = now - last > 30*60*1000;   // 同一裝置 30 分鐘內只算一次
+  try{
+    const r = await fetch(STATS_URL + (hit ? "/hit" : "/stats"), {method: hit ? "POST" : "GET"});
+    const j = await r.json();
+    if (Number.isFinite(+j.views)) $("#views").textContent = (+j.views).toLocaleString("zh-TW");
+    if (hit) try{ localStorage.setItem(KEY, String(now)); }catch(e){}
+  }catch(e){}
+}
+
+$("#list").addEventListener("click", e => {
+  if (e.target.closest("a.play")) return;
+  const c = e.target.closest(".card"); if (c) openNotes(+c.dataset.i);
+});
+$("#list").addEventListener("keydown", e => {
+  if ((e.key === "Enter" || e.key === " ") && e.target.classList.contains("card")){ e.preventDefault(); openNotes(+e.target.dataset.i); }
+});
+$("#mClose").onclick = closeNotes;
+$("#mask").addEventListener("click", e => { if (e.target.id === "mask") closeNotes(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeNotes(); });
+
+fetch("games.json", {cache:"no-store"}).then(r => r.json()).then(d => {
+  games = d.games || [];
+  $("#list").innerHTML = games.map(card).join("");
+  startPolling();
+}).catch(() => { $("#list").innerHTML = '<p class="desc" style="text-align:center">遊戲清單載入失敗，請重新整理</p>'; });
+views();
+</script>
+</body>
+</html>

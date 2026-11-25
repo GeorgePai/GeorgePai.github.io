@@ -1,0 +1,23 @@
+{
+ "updated": "2026-11-25",
+ "games": [
+  {
+   "id": "alphapotato",
+   "name": "Alpha Potato",
+   "tag": "推塔 × 英雄操作",
+   "desc": "波塔軍團對上野獸大軍：操作英雄、推倒敵塔、守住聖樹。",
+   "version": "V4.4",
+   "date": "11/24",
+   "built": "2026-11-25T13:27:41+0800",
+   "path": "/AlphaPotato/",
+   "icon": "games/alphapotato/icon-512.png",
+   "online": "https://lol-rank.leafoflegends.workers.dev/online",
+   "notes": [
+    "五關地圖由簡到難：每邊的塔從 2 座到 5 座，有並排雙塔夾道",
+    "霜雪凍原、幽冥深淵的路中間多了小島，可以從兩邊繞過去",
+    "熔岩火山、幽冥深淵過河變成窄橋",
+    "5 首配樂全部重作：長笛、陶笛、吉他、鋼琴，更溫暖好聽"
+   ]
+  }
+ ]
+}
