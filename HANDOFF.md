@@ -29,6 +29,7 @@
 | assets/cubic11.woff2 | 俐方體 11 號（從遊戲 index.html 的 G_FONT 抽出的子集，5658 字；缺字自動用系統字型） |
 | assets/icon-32.png / icon-180.png | 網站 favicon、主畫面圖示（暫用 Alpha Potato 的） |
 | stats/ | 瀏覽人數伺服器 pp-stats（Cloudflare Worker＋D1） |
+| move/index.html | 一鍵搬存檔頁：在舊網址讀出 ap_ 存檔（不搬 ap_rk_ss、ap_sid、ap_dev、ap_pin、ap_adm），放在網址 # 後面帶到 https://potatopai.com/move/ 寫入；舊網址留備份並寫 ap_moved；新網址已有存檔時要玩家確認 |
 
 設計：黑白灰像素風＋暖米色（--potato #e3d3ae）。手機直屏優先，檢查 390×844、360×780、1280×720；文字不可截斷/重疊/超框，並排元件等寬等距等高。
 
@@ -74,6 +75,7 @@
 - 2026-11-25：AlphaPotato main ← release（V4.4，補上 game.json），commit 1e56506。
 - 2026-11-25：網站第一版上線；pp-stats 上線，網站開始顯示瀏覽人數。
 - 2026-11-25：AlphaPotato main ← release（V4.5），commit 50928ae；網站 games.json 同步 V4.5。
+- 2026-11-25：一鍵搬存檔頁 /move/ 上線（尚未對玩家公開，等 Pai 同意切換）。
 - 2026-11-25：AlphaPotato main ← release（V4.5.3，Pai 說 OK 上架），commit 52b0b9c；兩個網址同時更新。
 - 2026-11-25：買 potatopai.com；網站與遊戲上線到 Cloudflare（Worker potatopai-site、alphapotato）；pp-stats 允許新網域。
 
