@@ -9,7 +9,7 @@
   - Worker「alphapotato」：連 AlphaPotato main（根目錄 /），設定在 main 的 wrangler.toml（建置時把檔案複製到 dist/AlphaPotato/）。路由 potatopai.com/AlphaPotato*（比網站的路由精確，優先）。
   - DNS：potatopai.com、www 都是 A 192.0.2.1（Proxied，只是讓流量進 Cloudflare）；轉址規則「Redirect from WWW to root」。
   - 網域在 Cloudflare 註冊（自動續約，每年 $11.17）。
-- 搬家期間 GitHub Pages 舊網址照常運作（同一個 repo 同時供兩邊），搬家計畫見私人專案文件 claude/migration-plan.md。
+- 舊網址 GitHub Pages 不另外處理（Pai 2026-11-25 決定），但因為是同一個 repo，會跟著一起更新。主網址一律是 potatopai.com。
 
 ## 舊網址（GitHub Pages）
 - 網站：https://georgepai.github.io/ （repo GeorgePai/GeorgePai.github.io，main 根目錄，GitHub Pages）
@@ -75,7 +75,8 @@
 - 2026-11-25：AlphaPotato main ← release（V4.4，補上 game.json），commit 1e56506。
 - 2026-11-25：網站第一版上線；pp-stats 上線，網站開始顯示瀏覽人數。
 - 2026-11-25：AlphaPotato main ← release（V4.5），commit 50928ae；網站 games.json 同步 V4.5。
-- 2026-11-25：一鍵搬存檔頁 /move/ 上線（尚未對玩家公開，等 Pai 同意切換）。
+- 2026-11-25：AlphaPotato main ← release（V4.5.4，Pai 說上架）。
+- 2026-11-25：Pai 決定：舊網址不另外處理、不提醒舊玩家，新網址 potatopai.com 為主。一鍵搬存檔頁 /move/ 留著備用，不主動公開。
 - 2026-11-25：AlphaPotato main ← release（V4.5.3，Pai 說 OK 上架），commit 52b0b9c；兩個網址同時更新。
 - 2026-11-25：買 potatopai.com；網站與遊戲上線到 Cloudflare（Worker potatopai-site、alphapotato）；pp-stats 允許新網域。
 
