@@ -38,6 +38,19 @@
   - 改程式：改 stats/ → 推 main → 到 Cloudflare 的 pp-stats → Deployments 確認 Success。
 - 雲端 shell 連不到 Cloudflare／workers.dev：要看部署或測端點，用桌面 App 內建瀏覽器或 Claude in Chrome。
 
+## 長期路線圖（2026-11-25 Pai 同意方向）
+
+原則：最低成本、Pai 不用動手、不存密碼。資安細節不寫在這個公開 repo，放在 Pai 的 Mac 備份資料夾 SECURITY-NOTES.md 和 Potato Pai 專案文件。
+
+1. 資安修正（遊戲開發 session 負責）。
+2. 壓力測試：用測試用伺服器（不打正式伺服器），在 Pai 的 VPS 模擬 500～1,000 位玩家。
+3. 升級 Workers Paid（$5/月）：每日請求接近 5 萬次時升級並設帳單警示（付費，要 Pai 確認）。
+4. 雲端存檔：掛在遊戲現有的玩家身分上，D1 每玩家一列，只在戰鬥結束／購買時寫入；存檔碼改成短期換機碼。
+5. 「用 Google 登入」綁定：不存密碼，盡量不存 email；需要隱私權頁＋刪除帳號功能。
+6. 全站帳號：同網域，存檔依（帳號, 遊戲）分開，新遊戲共用。
+
+負載估算：每位玩家約 100～250 次請求／小時。Workers 免費每天 10 萬次（台灣 08:00 重置，超過就失敗）≈ 400～1,000 玩家·小時/天；Paid $5/月含 1,000 萬次/月 ≈ 1,300～3,300 玩家·小時/天。D1 免費每天寫入 10 萬列。
+
 ## 上架新版遊戲（AlphaPotato）
 1. `git ls-remote https://github.com/GeorgePai/AlphaPotato` 比對 release 與 main，或比對兩邊 game.json 的 version。
 2. clone release（/home/claude/ap-release）與 main（/home/claude/ap-main），depth 1。
@@ -50,6 +63,7 @@
 ## 部署紀錄
 - 2026-11-25：AlphaPotato main ← release（V4.4，補上 game.json），commit 1e56506。
 - 2026-11-25：網站第一版上線；pp-stats 上線，網站開始顯示瀏覽人數。
+- 2026-11-25：AlphaPotato main ← release（V4.5），commit 50928ae；網站 games.json 同步 V4.5。
 
 ## 待 Pai 決定 / 待辦
 - 網站自己的圖示目前沿用 Alpha Potato 圖示，要不要做 Potato Pai 專屬圖示。
