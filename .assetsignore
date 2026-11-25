@@ -5,3 +5,4 @@ wrangler.toml
 .assetsignore
 HANDOFF.md
 node_modules
+.wrangler
