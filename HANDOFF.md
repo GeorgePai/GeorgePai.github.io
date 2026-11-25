@@ -74,10 +74,10 @@
 - 2026-11-25：AlphaPotato main ← release（V4.4，補上 game.json），commit 1e56506。
 - 2026-11-25：網站第一版上線；pp-stats 上線，網站開始顯示瀏覽人數。
 - 2026-11-25：AlphaPotato main ← release（V4.5），commit 50928ae；網站 games.json 同步 V4.5。
+- 2026-11-25：AlphaPotato main ← release（V4.5.3，Pai 說 OK 上架），commit 52b0b9c；兩個網址同時更新。
 - 2026-11-25：買 potatopai.com；網站與遊戲上線到 Cloudflare（Worker potatopai-site、alphapotato）；pp-stats 允許新網域。
 
 ## 待 Pai 決定 / 待辦
-- release 有 V4.5.1、V4.5.2 待 Pai 預覽，線上 V4.5。
 - 原始碼搬私人 repo 進行中（遊戲開發處理）。
 - VPS 壓力測試：先等等。Workers Paid：每日請求接近 5 萬次再提醒 Pai。
 - 網站自己的圖示目前沿用 Alpha Potato 圖示，要不要做 Potato Pai 專屬圖示。
