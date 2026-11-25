@@ -67,10 +67,22 @@
 - 2026-11-25：AlphaPotato main ← release（V4.5），commit 50928ae；網站 games.json 同步 V4.5。
 
 ## 待 Pai 決定 / 待辦
+- release 有 V4.5.1、V4.5.2 待 Pai 預覽，線上 V4.5。
+- 原始碼搬私人 repo 進行中（遊戲開發處理）。
+- VPS 壓力測試：先等等。Workers Paid：每日請求接近 5 萬次再提醒 Pai。
 - 網站自己的圖示目前沿用 Alpha Potato 圖示，要不要做 Potato Pai 專屬圖示。
 
 ## 工作規則
 - 回覆繁中、結論先講、精簡，每次附網站與相關連結。
 - 給 Pai 的東西要簡單：能自動就自動，要他動手只給一個步驟。
 - Mac 備份資料夾：/Users/paiju/Desktop/Claude/PotatoPai/
-- 「交接」：更新本檔、推 GitHub、備份 Mac，回覆可貼上的接手指令，提醒改名（目前 session 改「potato pai - 網站管理 (retired)」）。
+- 「交接」：見下方「交接機制」。
+
+## 交接機制（Pai 說「交接」時）
+- 新 session 名稱一律「potato pai - 網站管理」；舊的改名「potato pai - 網站管理 (retired)」。
+- 交接 prompt 是私人的：Potato Pai 專案文件 `claude/handoff-prompt.md`（Mac 備份：PotatoPai/HANDOFF-PROMPT.md）。私人資安備忘：`claude/security-notes.md`（Mac：PotatoPai/SECURITY-NOTES.md）。這兩份不放進公開 repo。
+- 步驟：
+  1. 更新本檔（部署紀錄、待辦、架構變動）→ 推網站 main。
+  2. 更新交接 prompt 的「目前待辦」與最後更新時間、更新私人資安備忘 → 寫入專案文件＋備份 Mac。
+  3. 網站檔案備份到 Mac 的 PotatoPai/site/。
+  4. 回覆 Pai：交接 prompt 全文放在一個程式碼區塊方便複製，附 HANDOFF.md 連結，提醒舊 session 改名。
