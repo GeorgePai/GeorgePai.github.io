@@ -5,4 +5,4 @@ compatibility_date = "2026-11-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "pp-stats"
-database_id = "REPLACE_WITH_D1_ID"   # 建好 D1 後填入
+database_id = "0052c889-0e85-4b8b-8ced-3555b9947daa"
