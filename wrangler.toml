@@ -1,0 +1,12 @@
+# Potato Pai 網站：Cloudflare Workers 靜態檔案（https://potatopai.com/）
+# 遊戲由各自的 Worker 以更精確的路由接手，例如 potatopai.com/AlphaPotato*
+name = "potatopai-site"
+compatibility_date = "2026-11-01"
+workers_dev = true
+preview_urls = false
+routes = [
+  { pattern = "potatopai.com/*", zone_name = "potatopai.com" }
+]
+
+[assets]
+directory = "."

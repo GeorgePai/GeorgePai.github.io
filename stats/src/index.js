@@ -2,7 +2,7 @@
 // POST /hit  記一次瀏覽，回傳 {ok:1, views}
 // GET  /stats 回傳 {ok:1, views}
 // 前端已用 localStorage 擋「同一裝置 30 分鐘內只算一次」；這裡再用記憶體擋同 IP 30 分鐘內重複寫入。
-const ORIGINS = ["https://georgepai.github.io"];
+const ORIGINS = ["https://potatopai.com", "https://georgepai.github.io"];
 const DEDUP_MS = 30 * 60 * 1000;
 const seen = new Map(); // ip -> 上次寫入時間（單一 isolate 內有效）
 let ready = false;
