@@ -23,8 +23,10 @@
 ## 網站檔案
 | 檔案 | 用途 |
 |---|---|
-| index.html | 整個網站（單檔，含 CSS/JS） |
-| games.json | 遊戲清單 `{updated, games:[game.json…]}`；icon 改成網站內路徑 |
+| index.html | 整個網站（單檔，含 CSS/JS）：RPG 風標題「Potato Pai」（Lilita One＋雙層框＋流動光澤）＋左右滑遊戲卡片（影片封面、名稱、標籤、開始玩／更新內容） |
+| games.json | 遊戲清單 `{updated, games:[game.json…]}`；icon 改成網站內路徑；**media（poster、mp4、webm）是網站自己加的欄位，從 game.json 重新整理時要保留** |
+| games/alphapotato/highlight-v2.mp4/.webm、poster.jpg | 卡片封面精華影片（約 16 秒、2 MB，實機逐格錄製）與封面圖；換影片要用新檔名，避免快取 |
+| assets/lilita-one.woff2 | 標題字體 Lilita One（SIL OFL，授權檔 lilita-one-LICENSE.txt） |
 | games/<id>/icon-512.png | 從遊戲 release 複製來的圖示 |
 | assets/cubic11.woff2 | 俐方體 11 號（從遊戲 index.html 的 G_FONT 抽出的子集，5658 字；缺字自動用系統字型） |
 | assets/icon-32.png / icon-180.png | 網站 favicon、主畫面圖示（暫用 Alpha Potato 的） |
@@ -34,14 +36,14 @@
 設計：黑白灰像素風＋暖米色（--potato #e3d3ae）。手機直屏優先，檢查 390×844、360×780、1280×720；文字不可截斷/重疊/超框，並排元件等寬等距等高。
 
 ## 即時在線人數
-- 每款讀 game.json 的 `online`（目前 https://lol-rank.leafoflegends.workers.dev/online → `{ok,game,n,t}`），不寫死。
+- 每款讀 game.json 的 `online`（目前 https://ap-rank.alphapotato.workers.dev/online → `{ok,game,n,t}`），不寫死。
 - 每 30 秒抓一次，分頁不可見時停止。失敗顯示「—」。
 
 ## 網站瀏覽人數（pp-stats）
 - 程式：stats/src/index.js、stats/wrangler.toml。
 - 端點：POST /hit（+1 並回傳 `{ok,views}`）、GET /stats。前端 localStorage 擋同裝置 30 分鐘，伺服器記憶體擋同 IP 30 分鐘。
 - D1 表會在第一次請求時自動建立（counters: k, v）。
-- 狀態：**已上線** https://pp-stats.leafoflegends.workers.dev （/stats 可直接看總數）
+- 狀態：**已上線** https://pp-stats.alphapotato.workers.dev （/stats 可直接看總數）
   - D1：pp-stats，id 0052c889-0e85-4b8b-8ced-3555b9947daa
   - Worker：pp-stats（Workers Builds 連 GeorgePai/GeorgePai.github.io，根目錄 /stats，main 推了就自動部署；Preview builds 關閉）
   - Cloudflare 帳號 33fe09f6bdada40ccd22be6e28edd124（和 lol-rank 同一個；Pai 用 Apple ID 登入）
@@ -67,7 +69,7 @@
 2. clone release（/home/claude/ap-release）與 main（/home/claude/ap-main），depth 1。
 3. 驗證：release 的 game.json version＝version.json 的 v；Playwright＋/usr/bin/google-chrome 開 index.html，0 個 pageerror。
 4. 同步：清空 ap-main（保留 .git 和 **wrangler.toml**——Cloudflare 設定只在 main）→ 複製 release 全部檔案（含 .nojekyll）→ commit「deploy V版本」→ `git -c push.negotiate=true push origin HEAD:main`；1～2 分鐘後確認 https://potatopai.com/AlphaPotato/version.json（Cloudflare 自動建置）和 https://georgepai.github.io/AlphaPotato/version.json（GitHub Pages）。（環境沒有 rsync，用 tar 複製。）
-5. 更新網站 games.json（從 game.json 整理，icon 改網站路徑並複製圖示）→ 推網站 main。
+5. 更新網站 games.json（從 game.json 整理，icon 改網站路徑並複製圖示，**保留 media 欄位**）→ 推網站 main。
 6. 回報 Pai：版本、網站連結、遊戲連結。
 - 回滾：main 退回前一個 deploy commit 再推（先問 Pai）。
 
@@ -78,6 +80,8 @@
 - 2026-11-25：AlphaPotato main ← release（V4.5.4，Pai 說上架）。
 - 2026-11-25：Pai 決定：舊網址不另外處理、不提醒舊玩家，新網址 potatopai.com 為主。一鍵搬存檔頁 /move/ 留著備用，不主動公開。
 - 2026-11-25：AlphaPotato main ← release（V4.5.3，Pai 說 OK 上架），commit 52b0b9c；兩個網址同時更新。
+- 2026-11-25：AlphaPotato main ← release（V4.5.5，排行榜搬到 ap-rank），commit 2c065f0。
+- 2026-11-25：新版首頁上線（RPG 標題、左右滑卡片、實機精華影片）；Cloudflare 子網域改名 alphapotato，瀏覽人數改 pp-stats.alphapotato.workers.dev，在線人數改 ap-rank.alphapotato.workers.dev。
 - 2026-11-25：買 potatopai.com；網站與遊戲上線到 Cloudflare（Worker potatopai-site、alphapotato）；pp-stats 允許新網域。
 
 ## 待 Pai 決定 / 待辦
