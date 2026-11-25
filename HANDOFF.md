@@ -31,12 +31,12 @@
 - 程式：stats/src/index.js、stats/wrangler.toml。
 - 端點：POST /hit（+1 並回傳 `{ok,views}`）、GET /stats。前端 localStorage 擋同裝置 30 分鐘，伺服器記憶體擋同 IP 30 分鐘。
 - D1 表會在第一次請求時自動建立（counters: k, v）。
-- 狀態：**尚未建立**。index.html 的 `STATS_URL = ""` → 顯示「—」。
-- 建立步驟（用 Claude in Chrome 或桌面 App 內建瀏覽器操作 Cloudflare 網頁，不要叫 Pai 跑指令）：
-  1. Cloudflare → Storage & Databases → D1 → 建立 `pp-stats`，把 database_id 填進 stats/wrangler.toml，推 main。
-  2. Workers & Pages → Create → Import a repository → GeorgePai/GeorgePai.github.io，Worker 名稱 `pp-stats`，根目錄 `/stats`，production branch main。
-  3. 部署完成後取得 `https://pp-stats.<子網域>.workers.dev`，填入 index.html 的 STATS_URL，推 main。
-  4. 確認 `/stats` 回 `{ok:1,views:…}`，網站顯示數字。
+- 狀態：**已上線** https://pp-stats.leafoflegends.workers.dev （/stats 可直接看總數）
+  - D1：pp-stats，id 0052c889-0e85-4b8b-8ced-3555b9947daa
+  - Worker：pp-stats（Workers Builds 連 GeorgePai/GeorgePai.github.io，根目錄 /stats，main 推了就自動部署；Preview builds 關閉）
+  - Cloudflare 帳號 33fe09f6bdada40ccd22be6e28edd124（和 lol-rank 同一個；Pai 用 Apple ID 登入）
+  - 改程式：改 stats/ → 推 main → 到 Cloudflare 的 pp-stats → Deployments 確認 Success。
+- 雲端 shell 連不到 Cloudflare／workers.dev：要看部署或測端點，用桌面 App 內建瀏覽器或 Claude in Chrome。
 
 ## 上架新版遊戲（AlphaPotato）
 1. `git ls-remote https://github.com/GeorgePai/AlphaPotato` 比對 release 與 main，或比對兩邊 game.json 的 version。
@@ -49,10 +49,9 @@
 
 ## 部署紀錄
 - 2026-11-25：AlphaPotato main ← release（V4.4，補上 game.json），commit 1e56506。
-- 2026-11-25：網站第一版。
+- 2026-11-25：網站第一版上線；pp-stats 上線，網站開始顯示瀏覽人數。
 
 ## 待 Pai 決定 / 待辦
-- pp-stats 建立（需要 Pai 在 Cloudflare 登入一次，若瀏覽器尚未登入）。
 - 網站自己的圖示目前沿用 Alpha Potato 圖示，要不要做 Potato Pai 專屬圖示。
 
 ## 工作規則
