@@ -63,7 +63,10 @@ h2::before,h2::after{content:"■";color:var(--potato2);font-size:10px;vertical-
 .more{background:var(--panel2);color:var(--text);border-color:var(--line)}
 .more:hover{border-color:var(--potato2)}
 
-footer{margin-top:36px;text-align:center;color:#5f5b52;font-size:13px}
+footer{margin-top:36px;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:4px 12px;text-align:center;color:#5f5b52;font-size:13px;line-height:1.4}
+.cr{display:inline-flex;align-items:center;gap:5px}
+.copy{width:9px;height:9px;flex:none}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 
 /* notes modal */
 .mask{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;padding:20px;z-index:10}
@@ -91,7 +94,7 @@ footer{margin-top:36px;text-align:center;color:#5f5b52;font-size:13px}
   <h2>遊戲</h2>
   <main class="grid" id="list"></main>
 
-  <footer>Potato Pai · 2026</footer>
+  <footer><span class="cr"><svg class="copy" viewBox="0 0 9 9" aria-hidden="true" shape-rendering="crispEdges" fill="currentColor"><rect x="2" y="0" width="1" height="1"/><rect x="3" y="0" width="1" height="1"/><rect x="4" y="0" width="1" height="1"/><rect x="5" y="0" width="1" height="1"/><rect x="6" y="0" width="1" height="1"/><rect x="1" y="1" width="1" height="1"/><rect x="7" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="3" y="2" width="1" height="1"/><rect x="4" y="2" width="1" height="1"/><rect x="5" y="2" width="1" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="8" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="2" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="2" y="5" width="1" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="3" y="6" width="1" height="1"/><rect x="4" y="6" width="1" height="1"/><rect x="5" y="6" width="1" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="1" y="7" width="1" height="1"/><rect x="7" y="7" width="1" height="1"/><rect x="2" y="8" width="1" height="1"/><rect x="3" y="8" width="1" height="1"/><rect x="4" y="8" width="1" height="1"/><rect x="5" y="8" width="1" height="1"/><rect x="6" y="8" width="1" height="1"/></svg><span class="sr">©</span> 2026 Potato Pai</span><span class="cr">保留所有權利</span></footer>
 </div>
 
 <div class="mask" id="mask" role="dialog" aria-modal="true" aria-labelledby="mTitle">
