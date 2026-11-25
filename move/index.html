@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<title>搬家 · Potato Pai</title>
+<meta name="theme-color" content="#0a0a0a">
+<link rel="icon" type="image/png" href="/assets/icon-32.png">
+<link rel="apple-touch-icon" href="/assets/icon-180.png">
+<link rel="preload" href="/assets/cubic11.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:Cubic11;src:url(/assets/cubic11.woff2) format("woff2");font-display:swap}
+:root{--bg:#0a0a0a;--panel:#151515;--panel2:#1d1d1d;--line:#3a3a3a;--text:#eeeeee;--muted:#a19b8b;--potato:#e3d3ae;--potato2:#bab4a2;--soil:#4d4a43;--warn:#e0a35a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Cubic11,"PingFang TC","Noto Sans TC",system-ui,sans-serif;font-size:16px;line-height:1.6;
+  min-height:100vh;overflow-wrap:anywhere;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+img{image-rendering:pixelated;image-rendering:crisp-edges}
+.wrap{max-width:480px;margin:0 auto;padding:32px 16px 40px;display:flex;flex-direction:column;gap:20px}
+.logo{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;text-decoration:none}
+.logo img{width:40px;height:40px;border:3px solid var(--potato);background:var(--panel)}
+.logo span{font-size:30px;line-height:1.1;color:var(--potato);text-shadow:3px 3px 0 var(--soil);letter-spacing:1px}
+.panel{background:var(--panel);border:3px solid var(--line);box-shadow:4px 4px 0 #000;padding:20px 18px;display:flex;flex-direction:column;gap:14px}
+.panel h1{margin:0;font-size:22px;line-height:1.3;font-weight:normal;color:var(--potato)}
+.panel p{margin:0;color:#cfcac0;font-size:15px}
+.route{display:grid;grid-template-columns:1fr;justify-items:stretch;gap:6px}
+.route div{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:8px 6px;background:var(--panel2);border:2px solid var(--line);text-align:center;min-width:0}
+.route span{font-size:12px;color:var(--muted)}
+.route b{font-weight:normal;font-size:16px;color:var(--text)}
+.route i{font-style:normal;color:var(--potato2);display:flex;justify-content:center}
+.route i svg{transform:rotate(90deg)}
+.note{border-left:4px solid var(--warn);padding:6px 10px;background:#1a1610;color:#e8d3b0;font-size:14px}
+.actions{display:grid;gap:10px}
+.actions.two{grid-template-columns:1fr 1fr}
+.btn{display:flex;align-items:center;justify-content:center;min-height:52px;padding:8px 10px;font:inherit;font-size:17px;line-height:1.3;text-align:center;text-decoration:none;
+  border:3px solid #000;box-shadow:3px 3px 0 #000;cursor:pointer}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #000}
+.btn:disabled{opacity:.6;cursor:wait}
+.main{background:var(--potato);color:#0a0a0a}
+.main:hover{background:#f0e3c4}
+.sub{background:var(--panel2);color:var(--text);border-color:var(--line)}
+.sub:hover{border-color:var(--potato2)}
+.small{text-align:center;font-size:14px}
+.small a{color:var(--potato2)}
+footer{text-align:center;color:#5f5b52;font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="logo" href="/"><img src="/assets/icon-180.png" alt=""><span>Potato Pai</span></a>
+  <main class="panel" id="panel" aria-live="polite"><p>載入中…</p></main>
+  <footer>Potato Pai 搬家頁</footer>
+</div>
+
+<script>
+(() => {
+  // 舊網址（GitHub Pages）→ 新網址（potatopai.com）的一鍵搬存檔。
+  // 同一個檔案在兩邊都有：在舊網址讀出存檔，在新網址寫入。只搬資料，不改遊戲。
+  const OLD_ORIGIN = "https://georgepai.github.io";
+  const NEW_ORIGIN = "https://potatopai.com";
+  const GAME_PATH = "/AlphaPotato/";
+  const OLD_HOSTS = ["georgepai.github.io"];
+  // 不搬：排行榜「這台裝置」工作階段、在線人數裝置 ID、開發者用、搬家標記
+  const SKIP = new Set(["ap_rk_ss", "ap_sid", "ap_dev", "ap_pin", "ap_adm", "ap_moved"]);
+  const KEY_OK = k => /^ap_[a-z0-9_]{1,40}$/.test(k) && !SKIP.has(k);
+  const MAX_BYTES = 4 * 1024 * 1024;
+
+  const $ = s => document.querySelector(s);
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+  const panel = $("#panel");
+  const show = html => { panel.innerHTML = html; };
+  const fmt = t => { try { return new Date(t).toLocaleString("zh-TW", {hour12: false}); } catch (e) { return ""; } };
+  const ls = {
+    get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set(k, v) { localStorage.setItem(k, v); },
+    keys() { try { return Object.keys(localStorage); } catch (e) { return []; } }
+  };
+  const routeHtml = `<div class="route"><div><span>舊網址</span><b>georgepai.github.io</b></div><i aria-hidden="true"><svg viewBox="0 0 5 9" width="10" height="18" shape-rendering="crispEdges" fill="currentColor"><rect x="0" y="0" width="1" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="1" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="1" y="2" width="1" height="1"/><rect x="2" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="1" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="3" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="1" y="4" width="1" height="1"/><rect x="2" y="4" width="1" height="1"/><rect x="3" y="4" width="1" height="1"/><rect x="4" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="1" y="5" width="1" height="1"/><rect x="2" y="5" width="1" height="1"/><rect x="3" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="1" y="6" width="1" height="1"/><rect x="2" y="6" width="1" height="1"/><rect x="0" y="7" width="1" height="1"/><rect x="1" y="7" width="1" height="1"/><rect x="0" y="8" width="1" height="1"/></svg></i><div><span>新網址</span><b>potatopai.com</b></div></div>`;
+
+  // ---- 編碼：JSON → (deflate-raw) → base64url，放在網址 # 後面（# 後面不會傳到伺服器）----
+  const b64u = bytes => { let s = ""; for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000)); return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); };
+  const unb64u = str => { const s = atob(str.replace(/-/g, "+").replace(/_/g, "/")); const b = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) b[i] = s.charCodeAt(i); return b; };
+  const pipe = async (bytes, stream) => new Uint8Array(await new Response(new Blob([bytes]).stream().pipeThrough(stream)).arrayBuffer());
+  async function encode(obj) {
+    const raw = new TextEncoder().encode(JSON.stringify(obj));
+    if (typeof CompressionStream === "function") { try { return "z" + b64u(await pipe(raw, new CompressionStream("deflate-raw"))); } catch (e) {} }
+    return "j" + b64u(raw);
+  }
+  async function decode(str) {
+    const kind = str[0], bytes = unb64u(str.slice(1));
+    let raw;
+    if (kind === "z") { if (typeof DecompressionStream !== "function") throw new Error("nodecomp"); raw = await pipe(bytes, new DecompressionStream("deflate-raw")); }
+    else if (kind === "j") raw = bytes;
+    else throw new Error("kind");
+    if (raw.length > MAX_BYTES) throw new Error("size");
+    return JSON.parse(new TextDecoder().decode(raw));
+  }
+
+  // ---- 舊網址：讀出存檔 ----
+  function collect() {
+    const d = {};
+    for (const k of ls.keys()) if (KEY_OK(k)) { const v = ls.get(k); if (v != null) d[k] = v; }
+    return d;
+  }
+  function oldPage() {
+    const d = collect(), n = Object.keys(d).length, moved = +ls.get("ap_moved") || 0;
+    if (!d.ap_team) {
+      show(`<h1>這台裝置沒有舊存檔</h1>${routeHtml}
+        <p>在這個瀏覽器裡找不到 Alpha Potato 的進度，可以直接到新網址開始玩。</p>
+        <p class="note">如果你平常是用別的瀏覽器，或用加到主畫面的捷徑玩，請從那裡打開遊戲，按「帶走存檔」。</p>
+        <div class="actions"><a class="btn main" href="${NEW_ORIGIN + GAME_PATH}">到新網址開始玩</a></div>`);
+      return;
+    }
+    show(`<h1>Alpha Potato 搬家了</h1>${routeHtml}
+      <p>按下面的按鈕，這台裝置的進度、角色和設定會一起帶到新網址。舊網址的存檔會留著當備份。</p>
+      ${moved ? `<p class="note">這台裝置在 ${esc(fmt(moved))} 搬過一次。再搬一次會用現在這份存檔。</p>` : ""}
+      <div class="actions"><button class="btn main" id="go" type="button">一鍵搬家</button></div>
+      <p class="small">共 ${n} 項資料 · <a href="${NEW_ORIGIN + GAME_PATH}">不搬，直接去新網址</a></p>`);
+    $("#go").onclick = async () => {
+      const btn = $("#go"); btn.disabled = true; btn.textContent = "打包中…";
+      try {
+        const payload = await encode({ v: 1, t: Date.now(), from: location.host, d: collect() });
+        try { ls.set("ap_moved", String(Date.now())); } catch (e) {}
+        location.href = NEW_ORIGIN + "/move/#" + payload;
+      } catch (e) {
+        btn.disabled = false; btn.textContent = "一鍵搬家";
+        const n2 = document.createElement("p"); n2.className = "note"; n2.textContent = "打包失敗，請重新整理再試一次。也可以在遊戲的「帳號」用存檔碼搬家。"; panel.appendChild(n2);
+      }
+    };
+  }
+
+  // ---- 新網址：寫入存檔 ----
+  function writeAll(d) {
+    for (const [k, v] of Object.entries(d)) if (KEY_OK(k) && typeof v === "string") ls.set(k, v);
+  }
+  function done() {
+    show(`<h1>搬家完成</h1>
+      <p>存檔已經帶到新網址，馬上進遊戲。</p>
+      <p class="note">如果你有把遊戲加到手機主畫面，請用新網址 potatopai.com 重新加一次。</p>
+      <div class="actions"><a class="btn main" href="${GAME_PATH}">開始玩</a></div>`);
+    setTimeout(() => location.replace(GAME_PATH), 2500);
+  }
+  function failPage(msg) {
+    show(`<h1>讀不到搬家資料</h1><p>${esc(msg)}</p>
+      <div class="actions two"><a class="btn sub" href="${OLD_ORIGIN}/move/">回舊網址重搬</a><a class="btn main" href="${GAME_PATH}">直接開始玩</a></div>
+      <p class="small">也可以在遊戲的「帳號」用存檔碼搬家。</p>`);
+  }
+  async function newPage() {
+    const hash = location.hash.slice(1);
+    if (!hash) {
+      show(`<h1>搬存檔要從舊網址開始</h1>${routeHtml}
+        <p>請用你原本玩遊戲的裝置和瀏覽器，打開舊網址的搬家頁，按「一鍵搬家」。</p>
+        <div class="actions two"><a class="btn sub" href="${OLD_ORIGIN}/move/">去舊網址搬家</a><a class="btn main" href="${GAME_PATH}">直接開始玩</a></div>`);
+      return;
+    }
+    history.replaceState(null, "", location.pathname);   // 存檔資料不留在網址列和歷史紀錄
+    let p;
+    try { p = await decode(hash); } catch (e) { failPage(e && e.message === "nodecomp" ? "這個瀏覽器太舊，無法解開搬家資料。請更新瀏覽器，或用存檔碼搬家。" : "搬家資料不完整，可能是連結被截斷了。"); return; }
+    const d = p && p.v === 1 && p.d && typeof p.d === "object" ? p.d : null;
+    if (!d || typeof d.ap_team !== "string") { failPage("搬家資料裡沒有遊戲進度。"); return; }
+    const keys = Object.keys(d).filter(KEY_OK), has = !!ls.get("ap_team");
+    const fromOld = OLD_HOSTS.includes(String(p.from || ""));
+    show(`<h1>${has ? "新網址已經有存檔" : "收到你的存檔"}</h1>
+      <p>來自 ${esc(p.from || "未知來源")}${p.t ? `，${esc(fmt(p.t))} 打包` : ""}，共 ${keys.length} 項資料。</p>
+      ${has ? `<p class="note">這台裝置在新網址已經玩過了。寫入後，新網址目前的進度會被舊網址的存檔取代。</p>` : ""}
+      ${fromOld ? "" : `<p class="note">這份資料不是從舊網址的搬家頁來的。不確定的話請按「不要寫入」。</p>`}
+      <div class="actions two"><a class="btn sub" href="${GAME_PATH}">${has ? "保留新存檔" : "不要寫入"}</a><button class="btn main" id="ok" type="button">${has ? "用舊存檔取代" : "寫入並開始玩"}</button></div>`);
+    $("#ok").onclick = () => {
+      try { const pick = {}; for (const k of keys) pick[k] = d[k]; writeAll(pick); done(); }
+      catch (e) { failPage("寫入失敗，可能是瀏覽器的儲存空間已滿或被關閉（例如無痕模式）。"); }
+    };
+  }
+
+  if (OLD_HOSTS.includes(location.hostname)) oldPage(); else newPage();
+})();
+</script>
+</body>
+</html>
