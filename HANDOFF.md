@@ -1,6 +1,6 @@
 # Potato Pai 網站 — 交接文件
 
-最後更新：2026-11-25（第一版）
+最後更新：2026-11-25
 
 ## 網址
 - 網站：https://georgepai.github.io/ （repo GeorgePai/GeorgePai.github.io，main 根目錄，GitHub Pages）
@@ -9,7 +9,7 @@
 
 ## 分工
 - 遊戲開發 session（alpha potato - game dev）：改 AlphaPotato 的 source，打包推 release。
-- 網站管理 session（本文件）：只管網站＋把 release 部署到 main。不讀不寫 source、leaderboard/、排行榜伺服器 lol-rank。
+- 網站管理 session（本文件）：只管網站＋把 release 部署到 main（要等 Pai 說「OK，上架」）。開發者版預覽網址不放上網站，也不寫進這份公開文件。不讀不寫 source、leaderboard/、排行榜伺服器 lol-rank。
 
 ## 網站檔案
 | 檔案 | 用途 |
@@ -42,7 +42,7 @@
 
 原則：最低成本、Pai 不用動手、不存密碼。資安細節不寫在這個公開 repo，放在 Pai 的 Mac 備份資料夾 SECURITY-NOTES.md 和 Potato Pai 專案文件。
 
-1. 資安修正（遊戲開發 session 負責）。
+1. 資安修正（遊戲開發 session 負責）：管理權限、頻率限制已修（2026-11-25）；原始碼搬私人 repo 待辦。
 2. 壓力測試：用測試用伺服器（不打正式伺服器），在 Pai 的 VPS 模擬 500～1,000 位玩家。
 3. 升級 Workers Paid（$5/月）：每日請求接近 5 萬次時升級並設帳單警示（付費，要 Pai 確認）。
 4. 雲端存檔：掛在遊戲現有的玩家身分上，D1 每玩家一列，只在戰鬥結束／購買時寫入；存檔碼改成短期換機碼。
@@ -52,6 +52,7 @@
 負載估算：每位玩家約 100～250 次請求／小時。Workers 免費每天 10 萬次（台灣 08:00 重置，超過就失敗）≈ 400～1,000 玩家·小時/天；Paid $5/月含 1,000 萬次/月 ≈ 1,300～3,300 玩家·小時/天。D1 免費每天寫入 10 萬列。
 
 ## 上架新版遊戲（AlphaPotato）
+**2026-11-25 起：release 有新版不會自動上架。** 流程是遊戲開發推 release → Pai 用開發者版預覽試玩 → Pai 說「OK，上架」→ 才部署到 main。發現 release 比 main 新時，只回報版本，不部署。
 1. `git ls-remote https://github.com/GeorgePai/AlphaPotato` 比對 release 與 main，或比對兩邊 game.json 的 version。
 2. clone release（/home/claude/ap-release）與 main（/home/claude/ap-main），depth 1。
 3. 驗證：release 的 game.json version＝version.json 的 v；Playwright＋/usr/bin/google-chrome 開 index.html，0 個 pageerror。
