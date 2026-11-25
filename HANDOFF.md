@@ -1,8 +1,8 @@
 # Potato Pai 網站 — 交接文件
 
-最後更新：2026-11-25
+最後更新：2026-11-25 21:00（交接）
 
-## 網址（2026-11-25 起搬家中：新網址 potatopai.com）
+## 網址（主網址 potatopai.com）
 - **新網站：https://potatopai.com/**（www 自動轉到這裡）；新遊戲網址：https://potatopai.com/AlphaPotato/
 - 託管：Cloudflare Workers 靜態檔案，推 main 自動部署。
   - Worker「potatopai-site」：連網站 repo（根目錄 /），設定在 wrangler.toml＋.assetsignore（不公開 stats/、HANDOFF.md、wrangler.toml）。路由 potatopai.com/*。
@@ -18,7 +18,12 @@
 
 ## 分工
 - 遊戲開發 session（alpha potato - game dev）：改 AlphaPotato 的 source，打包推 release。
-- 網站管理 session（本文件）：只管網站＋把 release 部署到 main（要等 Pai 說「OK，上架」）。開發者版預覽網址不放上網站，也不寫進這份公開文件。不讀不寫 source、leaderboard/、排行榜伺服器 lol-rank。
+- 網站管理 session（本文件）：只管網站＋把 release 部署到 main（要等 Pai 說「OK，上架」）。開發者版預覽網址不放上網站，也不寫進這份公開文件。不讀不寫原始碼私人 repo AlphaPotato-src、排行榜伺服器 ap-rank（原 lol-rank）。
+
+## 跟遊戲開發溝通（2026-11-25 起）
+- 兩個 session 互相交代事情一律寫在 Potato Pai 私人專案文件的「留言板」（路徑見私人交接 prompt），不再請 Pai 轉貼。
+- 每次 Pai 傳訊息，先讀留言板，處理寫給網站管理、狀態「待處理」的留言，處理完改「已處理（時間、一句結果）」。
+- 一般事項（路由、文件、測試、回報）直接做；特殊事項（花錢、刪資料、上架或對外公開、改安全設定／權限／金鑰、改玩家看得到的規則）寫「等 Pai 確認」，Pai 說 OK 才做。
 
 ## 網站檔案
 | 檔案 | 用途 |
@@ -33,7 +38,7 @@
 | stats/ | 瀏覽人數伺服器 pp-stats（Cloudflare Worker＋D1） |
 | move/index.html | 一鍵搬存檔頁：在舊網址讀出 ap_ 存檔（不搬 ap_rk_ss、ap_sid、ap_dev、ap_pin、ap_adm），放在網址 # 後面帶到 https://potatopai.com/move/ 寫入；舊網址留備份並寫 ap_moved；新網址已有存檔時要玩家確認 |
 
-設計：黑白灰像素風＋暖米色（--potato #e3d3ae）。手機直屏優先，檢查 390×844、360×780、1280×720；文字不可截斷/重疊/超框，並排元件等寬等距等高。
+設計：極簡深色底＋金色強調（--gold #e8d6a6），小資訊用像素字 Cubic11；上方 RPG 風標題、下方左右滑卡片，只放標籤不放描述句。手機直屏優先，檢查 390×844、360×780、1280×720；文字不可截斷/重疊/超框，並排元件等寬等距等高。
 
 ## 即時在線人數
 - 每款讀 game.json 的 `online`（目前 https://ap-rank.alphapotato.workers.dev/online → `{ok,game,n,t}`），不寫死。
@@ -50,11 +55,14 @@
   - 改程式：改 stats/ → 推 main → 到 Cloudflare 的 pp-stats → Deployments 確認 Success。
 - 雲端 shell 連不到 Cloudflare／workers.dev：要看部署或測端點，用桌面 App 內建瀏覽器或 Claude in Chrome。
 
+## Cloudflare 路由（越精確越優先）
+- potatopai.com/* → potatopai-site；potatopai.com/AlphaPotato* → alphapotato；之後 potatopai.com/api/* → pp-account。其他私人路由記在私人資安備忘。
+
 ## 長期路線圖（2026-11-25 Pai 同意方向）
 
 原則：最低成本、Pai 不用動手、不存密碼。資安細節不寫在這個公開 repo，放在 Pai 的 Mac 備份資料夾 SECURITY-NOTES.md 和 Potato Pai 專案文件。
 
-1. 資安修正（遊戲開發 session 負責）：管理權限、頻率限制已修（2026-11-25）；原始碼搬私人 repo 待辦。
+1. 資安修正（遊戲開發 session 負責）：管理權限、頻率限制已修；原始碼已搬私人 repo（2026-11-25）。
 2. 壓力測試：用測試用伺服器（不打正式伺服器），在 Pai 的 VPS 模擬 500～1,000 位玩家。
 3. 升級 Workers Paid（$5/月）：每日請求接近 5 萬次時升級並設帳單警示（付費，要 Pai 確認）。
 4. 雲端存檔：掛在遊戲現有的玩家身分上，D1 每玩家一列，只在戰鬥結束／購買時寫入；存檔碼改成短期換機碼。
@@ -82,10 +90,13 @@
 - 2026-11-25：AlphaPotato main ← release（V4.5.3，Pai 說 OK 上架），commit 52b0b9c；兩個網址同時更新。
 - 2026-11-25：AlphaPotato main ← release（V4.5.5，排行榜搬到 ap-rank），commit 2c065f0。
 - 2026-11-25：新版首頁上線（RPG 標題、左右滑卡片、實機精華影片）；Cloudflare 子網域改名 alphapotato，瀏覽人數改 pp-stats.alphapotato.workers.dev，在線人數改 ap-rank.alphapotato.workers.dev。
+- 2026-11-25：改用私人專案文件留言板跟遊戲開發溝通；網站管理 session 交接。
 - 2026-11-25：買 potatopai.com；網站與遊戲上線到 Cloudflare（Worker potatopai-site、alphapotato）；pp-stats 允許新網域。
 
 ## 待 Pai 決定 / 待辦
-- 原始碼搬私人 repo 進行中（遊戲開發處理）。
+- 帳號與雲端存檔（遊戲開發實作中）：等遊戲開發在留言板通知 Worker pp-account 建好後，網站管理接 Cloudflare 路由 potatopai.com/api/* → pp-account（pp-account 的 Domains → Add Route）。
+- 隱私權政策頁（網站管理做；寫明存什麼、怎麼刪除；正式上線前先給 Pai 看）。
+- 之後可選：首頁顯示登入狀態。
 - VPS 壓力測試：先等等。Workers Paid：每日請求接近 5 萬次再提醒 Pai。
 - 網站自己的圖示目前沿用 Alpha Potato 圖示，要不要做 Potato Pai 專屬圖示。
 
