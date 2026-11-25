@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Potato Pai</title>
+<meta name="description" content="Potato Pai：打開瀏覽器就能玩的像素遊戲。">
+<meta name="theme-color" content="#0b0b0c">
+<meta property="og:title" content="Potato Pai">
+<meta property="og:description" content="打開瀏覽器就能玩的像素遊戲。">
+<meta property="og:image" content="https://potatopai.com/games/alphapotato/poster.jpg">
+<link rel="icon" type="image/png" href="/assets/icon-32.png">
+<link rel="apple-touch-icon" href="/assets/icon-180.png">
+<link rel="preload" href="/assets/cubic11.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:Cubic11;src:url(/assets/cubic11.woff2) format("woff2");font-display:swap}
+:root{
+  --ink:#0b0b0c;--ink2:#121214;--ink3:#18181b;--paper:#f3efe6;--mute:#8d887d;--mute2:#5c5850;
+  --line:rgba(243,239,230,.09);--line2:rgba(243,239,230,.16);--gold:#e8d6a6;--gold2:#cbb98a;--on:#7fd36f;
+  --sans:"PingFang TC","Noto Sans TC","Hiragino Sans","Microsoft JhengHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --pixel:Cubic11,var(--sans);
+  --pad:clamp(20px,5vw,64px);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--sans);font-size:16px;line-height:1.65;overflow-wrap:anywhere;-webkit-font-smoothing:antialiased}
+img,video{display:block;max-width:100%}
+a{color:inherit}
+/* 細微底片顆粒 */
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.06;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+
+/* ---------- 頂欄 ---------- */
+.top{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:calc(14px + env(safe-area-inset-top)) var(--pad) 14px;transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
+.top.solid{background:rgba(11,11,12,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-color:var(--line)}
+.mark{font-weight:700;font-size:14px;letter-spacing:.32em;text-decoration:none;white-space:nowrap}
+.mark span{color:var(--gold)}
+.nav{display:flex;gap:22px;font-size:14px;color:var(--mute)}
+.nav a{text-decoration:none;transition:color .2s}
+.nav a:hover{color:var(--paper)}
+
+/* ---------- 主視覺：實機影片 ---------- */
+.hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden;isolation:isolate}
+.media{position:absolute;inset:0;z-index:-2;background:#000}
+.media video,.media .poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;image-rendering:pixelated;transition:opacity .4s}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none}
+.hero-in{width:100%;padding:0 var(--pad) clamp(36px,7vh,72px);display:grid;gap:18px;max-width:1280px;margin:0 auto}
+.eyebrow{font-family:var(--pixel);font-size:13px;letter-spacing:.08em;color:var(--gold);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.eyebrow i{width:18px;height:1px;background:var(--gold2);display:inline-block}
+.title{text-shadow:0 2px 30px rgba(0,0,0,.35);margin:0;font-size:clamp(46px,11vw,128px);line-height:.92;font-weight:800;letter-spacing:-.035em}
+.lede{margin:0;max-width:34em;font-size:clamp(16px,2.1vw,20px);color:#d9d4c9}
+.cta{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:420px;margin-top:6px}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;min-height:54px;padding:10px 16px;border-radius:999px;font:inherit;font-size:16px;font-weight:600;
+  text-decoration:none;cursor:pointer;border:1px solid transparent;transition:transform .15s,background .2s,border-color .2s,color .2s;white-space:nowrap}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:var(--gold);color:#16130c}
+.btn.primary:hover{background:#f4e6bf}
+.btn.ghost{background:rgba(243,239,230,.06);color:var(--paper);border-color:var(--line2);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.btn.ghost:hover{border-color:rgba(243,239,230,.4)}
+.btn svg{width:12px;height:12px;flex:none}
+.facts{display:flex;flex-wrap:wrap;gap:8px 22px;font-family:var(--pixel);font-size:13px;color:var(--mute);margin-top:4px}
+.facts b{font-weight:normal;color:var(--paper)}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--mute2);margin-right:8px;vertical-align:1px}
+.dot.on{background:var(--on);box-shadow:0 0 0 0 rgba(127,211,111,.6);animation:ping 2.2s infinite}
+@keyframes ping{70%{box-shadow:0 0 0 7px rgba(127,211,111,0)}100%{box-shadow:0 0 0 0 rgba(127,211,111,0)}}
+.sound{position:absolute;right:var(--pad);bottom:clamp(36px,7vh,72px);z-index:2;display:none}
+
+/* ---------- 區塊 ---------- */
+section{padding:clamp(72px,11vw,140px) var(--pad);max-width:1280px;margin:0 auto}
+.kicker{font-family:var(--pixel);font-size:13px;color:var(--gold);letter-spacing:.08em;margin:0 0 14px}
+.nb{display:inline-block}
+.h2{text-wrap:balance;margin:0 0 clamp(28px,4vw,48px);font-size:clamp(28px,4.6vw,48px);line-height:1.15;font-weight:800;letter-spacing:-.02em;max-width:18em}
+
+/* 怎麼玩：三個重點 */
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,24px)}
+.pillar{display:flex;flex-direction:column;gap:14px}
+.shot{position:relative;aspect-ratio:4/3;border-radius:14px;overflow:hidden;background:var(--ink3);border:1px solid var(--line)}
+.shot img,.shot video{width:100%;height:100%;object-fit:cover;image-rendering:pixelated}
+.pillar .n{font-family:var(--pixel);font-size:13px;color:var(--mute)}
+.pillar h3{margin:0;font-size:21px;font-weight:700;letter-spacing:-.01em}
+.pillar p{margin:0;color:var(--mute);font-size:15px}
+
+/* 遊戲列表 */
+.games{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(14px,2vw,24px)}
+.tile{position:relative;display:flex;flex-direction:column;border-radius:16px;overflow:hidden;background:var(--ink2);border:1px solid var(--line);text-decoration:none;transition:border-color .25s,transform .25s}
+.tile:hover{border-color:var(--line2);transform:translateY(-2px)}
+.tile .shot{border:0;border-radius:0;aspect-ratio:16/9}
+.tile-b{display:grid;gap:8px;padding:20px 20px 22px;flex:1;align-content:start}
+.tile-b h3{margin:0;font-size:22px;font-weight:700}
+.tile-b p{margin:0;color:var(--mute);font-size:15px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.chip{font-family:var(--pixel);font-size:12px;padding:3px 10px;border-radius:999px;border:1px solid var(--line2);color:#cfc9bd;white-space:nowrap}
+.tile.soon{border-style:dashed;cursor:default}
+.tile.soon:hover{transform:none;border-color:var(--line)}
+.soon .shot{display:flex;align-items:center;justify-content:center;background:repeating-linear-gradient(135deg,#141416 0 12px,#111113 12px 24px)}
+.soon .shot span{font-family:var(--pixel);font-size:13px;color:var(--mute2);letter-spacing:.1em}
+
+/* 頁尾 */
+footer{border-top:1px solid var(--line);padding:36px var(--pad) calc(36px + env(safe-area-inset-bottom));max-width:1280px;margin:0 auto;
+  display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 24px;color:var(--mute);font-size:13px}
+footer .px{font-family:var(--pixel)}
+.cr{display:inline-flex;align-items:center;gap:6px}
+.copy{width:9px;height:9px;flex:none}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* 更新內容視窗 */
+.mask{position:fixed;inset:0;z-index:60;background:rgba(5,5,6,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:none;align-items:flex-end;justify-content:center;padding:16px}
+.mask.show{display:flex}
+.sheet{width:100%;max-width:520px;max-height:calc(100svh - 32px);overflow:auto;background:var(--ink2);border:1px solid var(--line2);border-radius:20px;padding:24px 22px 22px}
+.sheet h3{margin:0 0 2px;font-size:22px;font-weight:800}
+.sheet .when{margin:0 0 16px;font-family:var(--pixel);font-size:13px;color:var(--mute)}
+.sheet ul{margin:0 0 20px;padding:0;list-style:none;display:grid;gap:12px}
+.sheet li{position:relative;padding-left:18px;color:#ddd8cd;font-size:15px}
+.sheet li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--gold)}
+.sheet .cta{max-width:none}
+
+/* 進場動畫 */
+.rise{opacity:0;transform:translateY(18px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+.rise.in{opacity:1;transform:none}
+
+@media (max-width:760px){
+  /* 手機：影片完整呈現在上方，文字接在下面 */
+  .hero{min-height:0;display:block}
+  .media{position:relative;inset:auto;aspect-ratio:4/3;width:100%}
+  .media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,12,.6) 0%,rgba(11,11,12,0) 22%,rgba(11,11,12,0) 70%,var(--ink) 100%)}
+  .hero-in{margin-top:-28px;position:relative;padding-bottom:8px}
+  .pillars{grid-template-columns:1fr;gap:36px}
+  .games{grid-template-columns:1fr}
+  .nav a.hide-s{display:none}
+}
+@media (min-width:761px){
+  .mask{align-items:center}
+  .hero::before{background:
+    linear-gradient(90deg,rgba(11,11,12,.88) 0%,rgba(11,11,12,.62) 32%,rgba(11,11,12,0) 62%),
+    linear-gradient(180deg,rgba(11,11,12,.72) 0%,rgba(11,11,12,0) 20%,rgba(11,11,12,0) 60%,rgba(11,11,12,.7) 85%,var(--ink) 100%)}
+  .hero-in{max-width:1280px}
+}
+@media (prefers-reduced-motion:reduce){.rise{opacity:1;transform:none;transition:none}.dot.on{animation:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header class="top" id="top">
+  <a class="mark" href="/">POTATO<span> </span>PAI</a>
+  <nav class="nav"><a href="#play" class="hide-s">怎麼玩</a><a href="#games">遊戲</a></nav>
+</header>
+
+<main>
+  <div class="hero" id="hero">
+    <div class="media">
+      <img class="poster" id="heroPoster" alt="" decoding="async">
+      <video id="heroVideo" muted loop playsinline preload="metadata" aria-hidden="true"></video>
+    </div>
+    <div class="hero-in">
+      <div class="eyebrow" id="eyebrow"><i></i><span>最新遊戲</span></div>
+      <h1 class="title" id="heroTitle">Alpha Potato</h1>
+      <p class="lede" id="heroDesc"></p>
+      <div class="cta">
+        <a class="btn primary" id="heroPlay" href="/AlphaPotato/"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z" fill="currentColor"/></svg>開始玩</a>
+        <button class="btn ghost" id="heroNotes" type="button">更新內容</button>
+      </div>
+      <div class="facts" id="facts"></div>
+    </div>
+  </div>
+
+  <section id="play">
+    <p class="kicker rise">HOW TO PLAY</p>
+    <h2 class="h2 rise"><span class="nb">帶著波塔軍團，</span><span class="nb">一路推倒敵塔。</span></h2>
+    <div class="pillars">
+      <div class="pillar rise"><div class="shot"><img alt="英雄在熔岩火山出招" loading="lazy" src="/games/alphapotato/shot-hero.jpg"></div><span class="n">01</span><h3>操作英雄</h3><p>移動、普攻、放技能，跟著兵線一起往前衝。</p></div>
+      <div class="pillar rise"><div class="shot"><img alt="波塔軍團與野獸大軍交戰" loading="lazy" src="/games/alphapotato/shot-tower.jpg"></div><span class="n">02</span><h3>推倒敵塔</h3><p>兵線在路中間碰撞，撐住戰線就能一路推進。</p></div>
+      <div class="pillar rise"><div class="shot"><img alt="守護聖樹" loading="lazy" src="/games/alphapotato/shot-tree.jpg"></div><span class="n">03</span><h3>守住聖樹</h3><p>五張地圖由簡到難，聖樹倒下就輸了。</p></div>
+    </div>
+  </section>
+
+  <section id="games">
+    <p class="kicker rise">GAMES</p>
+    <h2 class="h2 rise"><span class="nb">打開瀏覽器</span><span class="nb">就能玩。</span></h2>
+    <div class="games" id="list"></div>
+  </section>
+</main>
+
+<footer>
+  <span class="cr"><svg class="copy" viewBox="0 0 9 9" aria-hidden="true" shape-rendering="crispEdges" fill="currentColor"><path d="M2 0h5v1H2zM1 1h1v1H1zM7 1h1v1H7zM0 2h1v5H0zM8 2h1v5H8zM3 2h3v1H3zM2 3h1v3H2zM3 6h3v1H3zM1 7h1v1H1zM7 7h1v1H7zM2 8h5v1H2z"/></svg><span class="sr">©</span> 2026 Potato Pai　保留所有權利</span>
+  <span class="px">瀏覽 <b id="views">—</b> 次</span>
+</footer>
+
+<div class="mask" id="mask" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="sheet">
+    <h3 id="mTitle"></h3>
+    <p class="when" id="mWhen"></p>
+    <ul id="mNotes"></ul>
+    <div class="cta"><button class="btn ghost" id="mClose" type="button">關閉</button><a class="btn primary" id="mPlay" href="#">開始玩</a></div>
+  </div>
+</div>
+
+<script>
+const STATS_URL = "https://pp-stats.leafoflegends.workers.dev";
+const ONLINE_EVERY = 30000;
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+let games = [], online = {};
+
+// 主視覺影片：省流量或減少動態時只放封面圖
+function setHero(g){
+  const m = g.media || {};
+  $("#heroTitle").textContent = g.name;
+  $("#heroDesc").textContent = g.desc || "";
+  $("#heroPlay").href = g.path;
+  $("#eyebrow").innerHTML = `<i></i><span>${esc(g.tag || "最新遊戲")}</span><span>·</span><span>${esc(g.version)}</span>`;
+  if (m.poster) $("#heroPoster").src = m.poster;
+  const v = $("#heroVideo");
+  const calm = matchMedia("(prefers-reduced-motion: reduce)").matches || (navigator.connection && navigator.connection.saveData);
+  if (!calm && (m.mp4 || m.webm)) {
+    if (m.poster) v.poster = m.poster;
+    v.innerHTML = (m.webm ? `<source src="${esc(m.webm)}" type="video/webm">` : "") + (m.mp4 ? `<source src="${esc(m.mp4)}" type="video/mp4">` : "");
+    v.load(); const p = v.play(); if (p && p.catch) p.catch(()=>{});
+    v.addEventListener("playing", () => { $("#heroPoster").style.opacity = 0; }, {once:true});
+  }
+  renderFacts(g, 0);
+}
+function renderFacts(g, i){
+  const n = online[i];
+  $("#facts").innerHTML = `<span><i class="dot ${n > 0 ? "on" : ""}"></i><b>${n == null ? "—" : n}</b> 人在線</span><span>更新 <b>${esc(g.date)}</b></span><span>版本 <b>${esc(g.version)}</b></span>`;
+}
+function tile(g, i){
+  const m = g.media || {};
+  return `<a class="tile rise" href="${esc(g.path)}">
+    <div class="shot">${m.poster ? `<img src="${esc(m.poster)}" alt="" loading="lazy">` : ""}</div>
+    <div class="tile-b"><h3>${esc(g.name)}</h3><p>${esc(g.desc)}</p>
+      <div class="chips"><span class="chip">${esc(g.tag)}</span><span class="chip">${esc(g.version)}</span><span class="chip" data-on="${i}">— 人在線</span></div></div>
+  </a>`;
+}
+const soonTile = `<div class="tile soon rise" aria-hidden="true"><div class="shot"><span>NEXT GAME</span></div><div class="tile-b"><h3>下一款，製作中</h3><p>新的像素小遊戲正在路上。</p></div></div>`;
+
+function openNotes(i){
+  const g = games[i]; if (!g) return;
+  $("#mTitle").textContent = `${g.name} ${g.version}`;
+  $("#mWhen").textContent = `更新日期 ${g.date}`;
+  $("#mNotes").innerHTML = (g.notes || []).map(n => `<li>${esc(n)}</li>`).join("") || "<li>這版沒有更新說明</li>";
+  $("#mPlay").href = g.path;
+  $("#mask").classList.add("show"); $("#mClose").focus();
+}
+const closeNotes = () => $("#mask").classList.remove("show");
+$("#heroNotes").onclick = () => openNotes(0);
+$("#mClose").onclick = closeNotes;
+$("#mask").addEventListener("click", e => { if (e.target.id === "mask") closeNotes(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeNotes(); });
+
+async function pollOnline(){
+  if (document.hidden) return;
+  await Promise.all(games.map(async (g, i) => {
+    if (!g.online) return;
+    try { const j = await (await fetch(g.online, {cache:"no-store"})).json(); online[i] = j && j.ok && Number.isFinite(+j.n) ? +j.n : null; }
+    catch (e) { online[i] = null; }
+    const el = document.querySelector(`[data-on="${i}"]`); if (el) el.textContent = `${online[i] == null ? "—" : online[i]} 人在線`;
+    if (i === 0) renderFacts(g, 0);
+  }));
+}
+let timer = null;
+function startPolling(){ clearInterval(timer); pollOnline(); timer = setInterval(pollOnline, ONLINE_EVERY); }
+document.addEventListener("visibilitychange", () => {
+  const v = $("#heroVideo");
+  if (document.hidden) { clearInterval(timer); v.pause(); } else { startPolling(); if (v.currentSrc) v.play().catch(()=>{}); }
+});
+
+async function views(){
+  const KEY = "pp_last_hit", now = Date.now(); let last = 0;
+  try { last = +localStorage.getItem(KEY) || 0; } catch (e) {}
+  const hit = now - last > 30*60*1000;
+  try {
+    const j = await (await fetch(STATS_URL + (hit ? "/hit" : "/stats"), {method: hit ? "POST" : "GET"})).json();
+    if (Number.isFinite(+j.views)) $("#views").textContent = (+j.views).toLocaleString("zh-TW");
+    if (hit) try { localStorage.setItem(KEY, String(now)); } catch (e) {}
+  } catch (e) {}
+}
+
+// 頂欄：捲動後變實心
+const topBar = $("#top");
+const onScroll = () => topBar.classList.toggle("solid", scrollY > 40);
+addEventListener("scroll", onScroll, {passive:true}); onScroll();
+
+// 進場動畫
+const io = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), {rootMargin:"0px 0px -8% 0px"}) : null;
+const watch = () => document.querySelectorAll(".rise:not(.in)").forEach(el => io ? io.observe(el) : el.classList.add("in"));
+
+fetch("/games.json", {cache:"no-store"}).then(r => r.json()).then(d => {
+  games = d.games || [];
+  if (games[0]) setHero(games[0]);
+  $("#list").innerHTML = games.map(tile).join("") + soonTile;
+  watch(); startPolling();
+}).catch(() => { $("#list").innerHTML = '<p>遊戲清單載入失敗，請重新整理。</p>'; watch(); });
+views();
+</script>
+</body>
+</html>

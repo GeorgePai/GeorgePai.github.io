@@ -14,7 +14,12 @@
    "online": "https://lol-rank.leafoflegends.workers.dev/online",
    "notes": [
     "新網址 potatopai.com 也會收到新版本提示"
-   ]
+   ],
+   "media": {
+    "poster": "/games/alphapotato/poster.jpg",
+    "mp4": "/games/alphapotato/highlight.mp4",
+    "webm": "/games/alphapotato/highlight.webm"
+   }
   }
  ]
 }
