@@ -34,6 +34,7 @@ p{margin:0}
 ul{margin:0;padding-left:1.2em}
 li+li{margin-top:6px}
 b{color:var(--paper);font-weight:700}
+.lk{color:var(--gold);text-decoration:underline;text-underline-offset:3px}
 footer{margin-top:auto;padding:clamp(40px,8vh,80px) var(--pad) 28px;max-width:720px;width:100%;margin-left:auto;margin-right:auto;
   display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 24px;color:var(--mute);font-size:13px}
 .cr{display:inline-flex;align-items:center;gap:6px}
@@ -47,7 +48,7 @@ footer a:hover{color:var(--paper)}
 <main class="wrap">
   <a class="home" href="/">Potato Pai</a>
   <h1>隱私權政策</h1>
-  <p class="upd">最後更新：2026 年 11 月 25 日</p>
+  <p class="upd">最後更新：2026 年 11 月 26 日</p>
   <p class="lead">Potato Pai（potatopai.com）是個人經營的遊戲網站。這份說明告訴你：我們存了什麼、存多久、怎麼刪除。</p>
 
   <section>
@@ -59,6 +60,7 @@ footer a:hover{color:var(--paper)}
       <li><b>帳號時間</b>：建立時間、最後上線時間。</li>
       <li><b>登入憑證</b>：瀏覽器裡一個隨機產生的 cookie（pp_s），伺服器只存它加密後的雜湊值，不存原本的內容。</li>
       <li><b>防濫用</b>：建立帳號時記錄 IP 位址的雜湊值，1 天後刪除。</li>
+      <li><b>Google 帳號</b>（只有你選擇用 Google 建立帳號時）：Google 帳號編號和 email。只拿這兩樣，不拿你的名字、大頭照、聯絡人，也不碰你 Google 雲端硬碟裡的任何資料。</li>
     </ul>
   </section>
 
@@ -72,6 +74,16 @@ footer a:hover{color:var(--paper)}
   </section>
 
   <section>
+    <h2>Google 帳號資料怎麼用</h2>
+    <ul>
+      <li>只用來登入，讓你在不同裝置找回同一份雲端存檔。</li>
+      <li>不寄行銷信、不賣、也不提供給任何第三方。</li>
+      <li>email 只顯示在帳號頁給你本人看；排行榜仍然顯示你的遊戲內名稱。</li>
+      <li>本網站對 Google API 取得之資訊的使用與傳輸，遵守 <a class="lk" href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener">Google API 服務使用者資料政策</a>（包括「有限使用」規定）。</li>
+    </ul>
+  </section>
+
+  <section>
     <h2>資料放在哪裡</h2>
     <p>資料存放在 Cloudflare 的伺服器（Cloudflare D1）。</p>
   </section>
@@ -80,14 +92,15 @@ footer a:hover{color:var(--paper)}
     <h2>保存多久</h2>
     <ul>
       <li>被新存檔取代的舊版存檔：保留 30 天後刪除。</li>
-      <li>登出後已經沒有人能再登入的訪客帳號：30 天後刪除。</li>
-      <li>365 天都沒上線的訪客帳號：刪除。</li>
+      <li>訪客帳號（沒有用 Google 建立的）：登出後已經沒有人能再登入的，30 天後刪除；365 天都沒上線的，也會刪除。</li>
+      <li>用 Google 建立的帳號：不會因為很久沒上線被自動刪除。</li>
+      <li>登出只會讓那台裝置登出，帳號會保留。</li>
     </ul>
   </section>
 
   <section>
     <h2>怎麼刪除你的資料</h2>
-    <p>在遊戲裡點「帳號 → 帳號管理 → 刪除帳號」，會<b>立刻</b>刪除你的雲端存檔、舊版存檔和排行榜紀錄。</p>
+    <p>在遊戲裡點「帳號 → 帳號管理 → 刪除帳號」，會<b>立刻</b>刪除你的雲端存檔、舊版存檔、排行榜紀錄，以及 Google 帳號編號和 email。</p>
   </section>
 
   <section>
@@ -97,7 +110,7 @@ footer a:hover{color:var(--paper)}
 
   <section>
     <h2>之後的變更</h2>
-    <p>之後加入「用 Google 登入」時，會另外存 Google 帳號編號和 email，只用來幫你找回進度。到時會先更新這份說明。</p>
+    <p>這份說明有變更時，會更新上方的「最後更新」日期。</p>
   </section>
 </main>
 <footer>
