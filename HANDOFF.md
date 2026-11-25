@@ -2,7 +2,16 @@
 
 最後更新：2026-11-25
 
-## 網址
+## 網址（2026-11-25 起搬家中：新網址 potatopai.com）
+- **新網站：https://potatopai.com/**（www 自動轉到這裡）；新遊戲網址：https://potatopai.com/AlphaPotato/
+- 託管：Cloudflare Workers 靜態檔案，推 main 自動部署。
+  - Worker「potatopai-site」：連網站 repo（根目錄 /），設定在 wrangler.toml＋.assetsignore（不公開 stats/、HANDOFF.md、wrangler.toml）。路由 potatopai.com/*。
+  - Worker「alphapotato」：連 AlphaPotato main（根目錄 /），設定在 main 的 wrangler.toml（建置時把檔案複製到 dist/AlphaPotato/）。路由 potatopai.com/AlphaPotato*（比網站的路由精確，優先）。
+  - DNS：potatopai.com、www 都是 A 192.0.2.1（Proxied，只是讓流量進 Cloudflare）；轉址規則「Redirect from WWW to root」。
+  - 網域在 Cloudflare 註冊（自動續約，每年 $11.17）。
+- 搬家期間 GitHub Pages 舊網址照常運作（同一個 repo 同時供兩邊），搬家計畫見私人專案文件 claude/migration-plan.md。
+
+## 舊網址（GitHub Pages）
 - 網站：https://georgepai.github.io/ （repo GeorgePai/GeorgePai.github.io，main 根目錄，GitHub Pages）
 - Alpha Potato：https://georgepai.github.io/AlphaPotato/ （repo GeorgePai/AlphaPotato，main）
 - 遊戲與網站同一個網域 → 玩家存檔（localStorage）、主畫面捷徑不受影響。不要搬遊戲、不要改自訂網域。
@@ -56,7 +65,7 @@
 1. `git ls-remote https://github.com/GeorgePai/AlphaPotato` 比對 release 與 main，或比對兩邊 game.json 的 version。
 2. clone release（/home/claude/ap-release）與 main（/home/claude/ap-main），depth 1。
 3. 驗證：release 的 game.json version＝version.json 的 v；Playwright＋/usr/bin/google-chrome 開 index.html，0 個 pageerror。
-4. 同步：清空 ap-main（保留 .git）→ 複製 release 全部檔案（含 .nojekyll）→ commit「deploy V版本」→ `git -c push.negotiate=true push origin HEAD:main`；1～2 分鐘後確認 https://georgepai.github.io/AlphaPotato/version.json。（環境沒有 rsync，用 tar 複製。）
+4. 同步：清空 ap-main（保留 .git 和 **wrangler.toml**——Cloudflare 設定只在 main）→ 複製 release 全部檔案（含 .nojekyll）→ commit「deploy V版本」→ `git -c push.negotiate=true push origin HEAD:main`；1～2 分鐘後確認 https://potatopai.com/AlphaPotato/version.json（Cloudflare 自動建置）和 https://georgepai.github.io/AlphaPotato/version.json（GitHub Pages）。（環境沒有 rsync，用 tar 複製。）
 5. 更新網站 games.json（從 game.json 整理，icon 改網站路徑並複製圖示）→ 推網站 main。
 6. 回報 Pai：版本、網站連結、遊戲連結。
 - 回滾：main 退回前一個 deploy commit 再推（先問 Pai）。
@@ -65,6 +74,7 @@
 - 2026-11-25：AlphaPotato main ← release（V4.4，補上 game.json），commit 1e56506。
 - 2026-11-25：網站第一版上線；pp-stats 上線，網站開始顯示瀏覽人數。
 - 2026-11-25：AlphaPotato main ← release（V4.5），commit 50928ae；網站 games.json 同步 V4.5。
+- 2026-11-25：買 potatopai.com；網站與遊戲上線到 Cloudflare（Worker potatopai-site、alphapotato）；pp-stats 允許新網域。
 
 ## 待 Pai 決定 / 待辦
 - release 有 V4.5.1、V4.5.2 待 Pai 預覽，線上 V4.5。
