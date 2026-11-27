@@ -83,6 +83,7 @@
 - 回滾：main 退回前一個 deploy commit 再推（先問 Pai）。
 
 ## 部署紀錄
+- 2026-11-27：首頁像素風改版（Pai OK）：手繪像素標題 POTATO PAI（多層：色帶＋立體厚度＋黑框＋奶油外緣＋點陣光暈＋反光掃過）、標語「免下載，打開網頁就能玩」＋手機／電腦／直屏／橫屏像素圖示、RPG 視窗外框、卡片只留名稱＋在線人數＋版本＋「開發中」標籤，移除「製作中」卡片與遊戲標籤、頁尾加聯絡信箱。
 - 2026-11-27：隱私權政策加「聯絡我們」potatopai.0930@gmail.com（Pai 提供）。
 - 2026-11-26：AlphaPotato main ← release（V4.7，Google 登入建立帳號；Google 已改正式版後 Pai 說上架）。
 - 2026-11-26：隱私權政策更新（Pai OK）：加入 Google 帳號編號與 email、Google API 服務使用者資料政策（有限使用）、Google 帳號不會因久沒上線被刪。網址 /privacy/ 不可改（已填進 Google 登入同意畫面）。
@@ -119,3 +120,9 @@
   2. 更新交接 prompt 的「目前待辦」與最後更新時間、更新私人資安備忘 → 寫入專案文件＋備份 Mac。
   3. 網站檔案備份到 Mac 的 PotatoPai/site/。
   4. 回覆 Pai：交接 prompt 全文放在一個程式碼區塊方便複製，附 HANDOFF.md 連結，提醒舊 session 改名。
+
+## 首頁設計備忘（2026-11-27 改版）
+- 標題與圖示是程式產生的像素 SVG，直接內嵌在 index.html。產生器在 tools/pixgen2.py（標題字形、色帶、圖示點陣都在裡面），版型範本 tools/index2.tpl.html（@@WIDE@@ 等佔位符由產生器的輸出替換）。tools/ 已列入 .assetsignore，不會被公開成網頁。
+- 字型只用 Cubic11 像素字；字級只用 12／24／36px（像素字在 1×、2×、3× 螢幕都清晰）。新增文字前先用 fontTools 檢查缺字。
+- 外框一律用 .win（黑線）> .bd（立體金框，左上亮右下暗）> .in（內板），四角像素切角 .n2／.n1；像素單位 --u（手機 3px、電腦 4px）。
+- games.json 的 badge 欄位（目前「開發中」）會顯示成版本右邊的橘框標籤；同步 game.json 時要保留 media 與 badge。
