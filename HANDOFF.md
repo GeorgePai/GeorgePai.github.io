@@ -36,7 +36,7 @@
 | assets/cubic11.woff2 | 俐方體 11 號（從遊戲 index.html 的 G_FONT 抽出的子集，5658 字；缺字自動用系統字型） |
 | assets/icon-32.png / icon-180.png | 網站 favicon、主畫面圖示（暫用 Alpha Potato 的） |
 | stats/ | 瀏覽人數伺服器 pp-stats（Cloudflare Worker＋D1） |
-| privacy/index.html | 隱私權政策頁（2026-11-25 上線；首頁底部有連結）。內容依 pp-account 實際做法；**網址不可改**（已填進 Google 登入同意畫面）；補聯絡 email 時要更新 |
+| privacy/index.html | 隱私權政策頁（2026-11-25 上線；首頁底部有連結）。內容依 pp-account 實際做法；**網址不可改**（已填進 Google 登入同意畫面） |
 | move/index.html | 一鍵搬存檔頁：在舊網址讀出 ap_ 存檔（不搬 ap_rk_ss、ap_sid、ap_dev、ap_pin、ap_adm），放在網址 # 後面帶到 https://potatopai.com/move/ 寫入；舊網址留備份並寫 ap_moved；新網址已有存檔時要玩家確認 |
 
 設計：極簡深色底＋金色強調（--gold #e8d6a6），小資訊用像素字 Cubic11；上方 RPG 風標題、下方左右滑卡片，只放標籤不放描述句。手機直屏優先，檢查 390×844、360×780、1280×720；文字不可截斷/重疊/超框，並排元件等寬等距等高。
@@ -83,6 +83,7 @@
 - 回滾：main 退回前一個 deploy commit 再推（先問 Pai）。
 
 ## 部署紀錄
+- 2026-11-27：隱私權政策加「聯絡我們」potatopai.0930@gmail.com（Pai 提供）。
 - 2026-11-26：AlphaPotato main ← release（V4.7，Google 登入建立帳號；Google 已改正式版後 Pai 說上架）。
 - 2026-11-26：隱私權政策更新（Pai OK）：加入 Google 帳號編號與 email、Google API 服務使用者資料政策（有限使用）、Google 帳號不會因久沒上線被刪。網址 /privacy/ 不可改（已填進 Google 登入同意畫面）。
 - 2026-11-25：AlphaPotato main ← release（V4.6，訪客雲端存檔，Pai 說 OK 上架），commit 646a2ee；隱私權政策頁 /privacy/ 同時上線，首頁底部加連結。
@@ -99,7 +100,7 @@
 
 ## 待 Pai 決定 / 待辦
 - 帳號：第一階段訪客雲端存檔（V4.6）、第二階段 Google 登入（V4.7）都已上線；隱私權政策已含 Google 說明。之後可選：首頁顯示登入狀態。
-- 隱私權政策「聯絡我們」：等 Pai 給 email 再補。
+- 官方聯絡信箱：potatopai.0930@gmail.com（已放進隱私權政策「聯絡我們」）。
 - 之後可選：首頁顯示登入狀態。
 - VPS 壓力測試：先等等。Workers Paid：每日請求接近 5 萬次再提醒 Pai。
 - 網站自己的圖示目前沿用 Alpha Potato 圖示，要不要做 Potato Pai 專屬圖示。
