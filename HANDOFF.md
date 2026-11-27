@@ -83,6 +83,7 @@
 - 回滾：main 退回前一個 deploy commit 再推（先問 Pai）。
 
 ## 部署紀錄
+- 2026-11-27：首頁改成遊戲色系（Pai OK）：黑底＋遊戲同款彩色星點、圓頂綠樹（前後兩層）、泥土地、飄落綠葉＋金色螢火蟲、標題黑綠陰影＋柔光（無邊框光暈）。
 - 2026-11-27：首頁第三版（Pai OK）：夜空櫻花場景（雲、前後兩層櫻花樹、飄落花瓣、紫色光暈）、白字像素標題逐字波浪跳動＋雙層半透明陰影、米色面板外框（參考 Pai 給的像素遊戲 UI）、裝置圖示淡藍螢幕、綠色「開始玩」。
 - 2026-11-27：首頁像素風改版（Pai OK）：手繪像素標題 POTATO PAI（多層：色帶＋立體厚度＋黑框＋奶油外緣＋點陣光暈＋反光掃過）、標語「免下載，打開網頁就能玩」＋手機／電腦／直屏／橫屏像素圖示、RPG 視窗外框、卡片只留名稱＋在線人數＋版本＋「開發中」標籤，移除「製作中」卡片與遊戲標籤、頁尾加聯絡信箱。
 - 2026-11-27：隱私權政策加「聯絡我們」potatopai.0930@gmail.com（Pai 提供）。
@@ -126,5 +127,6 @@
 - 標題、櫻花樹、雲、裝置圖示都是程式產生的像素 SVG，內嵌在 index.html。產生器 tools/pixgen3.py → pix3.json；組裝 tools/build3.py（把 v3_head.html＋v3_style_body.html＋v3_script.html 的 @@佔位符@@ 換掉，輸出 index.html）。改設計請改這幾個檔再重跑，不要直接手改 index.html 的 SVG。tools/ 在 .assetsignore，不會公開。
 - 字型只用 Cubic11；字級只用 12／24／36px。新增文字前先用 fontTools 檢查缺字。
 - 面板：.win（深色外框）> .bd（米色立體框）> .in（內板）；.hot＝黃色標籤、.go＝綠色。切角 .n2／.n1；像素單位 --u（手機 3px、電腦 4px）。
-- 動畫：標題字母 .lt 波浪、雲 .cloud 漂移、花瓣 .petals i 飄落；prefers-reduced-motion 時全部關閉。
+- 色系跟遊戲一致：底色 #0a0a0a、樹綠 #2c3b24～#a6c97c、樹幹 #3d3021、新芽綠 #29713c、金 #f2c84b；面板米色＝馬鈴薯色。
+- 動畫：標題字母 .lt 波浪、綠葉 .petals i 飄落、螢火蟲 .petals b 上飄閃爍；prefers-reduced-motion 時全部關閉。（雲的產生器還在 pixgen3.py，目前沒用）
 - games.json 的 badge 欄位（目前「開發中」）顯示成版本右邊的黃色標籤；同步 game.json 時要保留 media 與 badge。

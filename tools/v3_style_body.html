@@ -1,7 +1,7 @@
 <style>
 @font-face{font-family:Cubic11;src:url(/assets/cubic11.woff2) format("woff2");font-display:swap}
 :root{
-  --bg:#171a2b;--ink:#23202a;--paper:#f3ecdc;--mute:#a7a3b8;--mute2:#5d5a72;
+  --bg:#0a0a0a;--ink:#23202a;--paper:#f3ecdc;--mute:#a39d8c;--mute2:#4d4a42;
   --face:#efe3c6;--faceH:#fff8e6;--faceS:#c9b48b;--panel:#f7eedb;--text:#2b2620;
   --px:Cubic11,"PingFang TC","Noto Sans TC",sans-serif;
   --pad:clamp(20px,5vw,48px);
@@ -19,7 +19,7 @@
 html{-webkit-text-size-adjust:100%;overflow-x:clip}
 body{margin:0;min-height:100svh;display:flex;flex-direction:column;align-items:center;color:var(--paper);font-family:var(--px);font-size:12px;line-height:1.5;
   overflow-wrap:anywhere;-webkit-font-smoothing:none;overflow-x:clip;padding:0 0 env(safe-area-inset-bottom);background-color:var(--bg);
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' shape-rendering='crispEdges'%3E%3Cg fill='%23f3ecdc'%3E%3Crect x='14' y='22' width='2' height='2' opacity='.35'/%3E%3Crect x='88' y='9' width='2' height='2' opacity='.18'/%3E%3Crect x='57' y='71' width='2' height='2' opacity='.25'/%3E%3Crect x='103' y='96' width='2' height='2' opacity='.15'/%3E%3Crect x='31' y='104' width='2' height='2' opacity='.2'/%3E%3C/g%3E%3C/svg%3E")}
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' shape-rendering='crispEdges'%3E%3Crect x='14' y='22' width='2' height='2' fill='%233fa36b' opacity='.7'/%3E%3Crect x='98' y='9' width='2' height='2' fill='%23d8c35a' opacity='.6'/%3E%3Crect x='57' y='81' width='2' height='2' fill='%234fb3b3' opacity='.5'/%3E%3Crect x='133' y='116' width='2' height='2' fill='%233fa36b' opacity='.45'/%3E%3Crect x='31' y='134' width='2' height='2' fill='%23d8c35a' opacity='.4'/%3E%3C/svg%3E")}
 a{color:inherit}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 svg{display:block}
@@ -42,14 +42,16 @@ svg{display:block}
   var(--f2) var(--f2) #1d1820,calc(var(--f2)*-1) var(--f2) #1d1820,var(--f2) calc(var(--f2)*-1) #1d1820,calc(var(--f2)*-1) calc(var(--f2)*-1) #1d1820,
   0 calc(var(--f2)*2) #1d1820,var(--f2) calc(var(--f2)*2) #1d1820,calc(var(--f2)*-1) calc(var(--f2)*2) #1d1820}
 /* 白字＋柔和陰影（跟標題同一套） */
-.soft{color:#fff;text-shadow:2px 2px 0 rgba(42,22,64,.9),4px 5px 0 rgba(22,12,42,.35)}
+.soft{color:#fff;text-shadow:2px 2px 0 rgba(14,26,13,.95),4px 5px 0 rgba(0,0,0,.45)}
 
 /* 主視覺：夜空光暈＋雲＋櫻花樹＋飄落花瓣 */
 .hero{width:100%}
 .scene{position:relative;width:100%;overflow:hidden;display:flex;justify-content:center;
   padding:clamp(56px,11vh,112px) var(--pad) calc(var(--tp)*16px + 8px);
-  background:radial-gradient(ellipse 62% 58% at 50% 46%,#34305a 0 34%,#2b2850 34% 52%,#232241 52% 70%,transparent 70%)}
-.ground{position:absolute;left:0;right:0;bottom:0;height:calc(var(--tp)*4px);background:#141526;box-shadow:0 calc(var(--tp)*-1px) 0 #1d1e35}
+  background:radial-gradient(ellipse 58% 62% at 50% 44%,rgba(150,190,110,.16) 0%,rgba(110,150,80,.09) 32%,rgba(70,100,50,.04) 56%,transparent 78%)}
+/* 標題本身再加一層柔光 */
+.title svg{filter:drop-shadow(0 0 calc(var(--p)*2px) rgba(220,240,190,.22)) drop-shadow(0 0 calc(var(--p)*6px) rgba(140,190,100,.14))}
+.ground{position:absolute;left:0;right:0;bottom:0;height:calc(var(--tp)*4px);background:#1a140d;box-shadow:0 calc(var(--tp)*-1px) 0 #2a3a20}
 .cloud,.tree{position:absolute;width:calc(var(--w)*var(--tp)*1px);height:calc(var(--h)*var(--tp)*1px)}
 .cloud{opacity:.42;animation:drift 60s steps(120) infinite alternate}
 .cloud.c1{left:calc(50% - var(--w)*var(--tp)*1.5px);top:16%}
@@ -62,8 +64,12 @@ svg{display:block}
 .tree.back.l{left:calc(50% - var(--tc)*var(--p)*.5px - var(--w)*var(--tp)*.25px);transform:scale(.62);transform-origin:bottom left}
 .tree.back.r{right:calc(50% - var(--tc)*var(--p)*.5px - var(--w)*var(--tp)*.25px);transform:scale(-.62,.62);transform-origin:bottom right}
 .petals{position:absolute;inset:0;pointer-events:none}
-.petals i{position:absolute;top:-8px;left:var(--x);width:calc(var(--tp)*2px);height:calc(var(--tp)*2px);background:var(--c,#f6b3cd);
+.petals i{position:absolute;top:-8px;left:var(--x);width:calc(var(--tp)*2px);height:calc(var(--tp)*2px);background:var(--c,#6fbf5a);
   animation:fall var(--d) var(--dl) infinite;animation-timing-function:steps(70)}
+/* 螢火蟲：從地面慢慢往上飄、一閃一閃 */
+.petals b{position:absolute;bottom:calc(var(--tp)*6px);left:var(--x);width:calc(var(--tp)*1px + 2px);height:calc(var(--tp)*1px + 2px);background:#ffe27a;box-shadow:0 0 0 2px rgba(255,214,90,.25);
+  animation:fly var(--d) var(--dl) infinite;animation-timing-function:steps(60)}
+@keyframes fly{0%{transform:translate(0,0);opacity:0}15%,35%,55%,75%{opacity:1}25%,45%,65%{opacity:.35}100%{transform:translate(var(--dx),calc(var(--fh,420px)*-.6));opacity:0}}
 @keyframes fall{0%{transform:translate(0,0);opacity:0}8%{opacity:1}88%{opacity:1}100%{transform:translate(var(--dx),var(--fh,420px));opacity:0}}
 .title{position:relative;z-index:2;margin:0;line-height:0;display:flex;justify-content:center}
 .title svg{flex:none;width:calc(var(--w)*var(--p)*1px);height:calc(var(--h)*var(--p)*1px)}
@@ -78,8 +84,8 @@ svg{display:block}
 .pitch{margin:clamp(22px,4vh,34px) 0 0;font-size:24px;line-height:1.35}
 @media (min-width:820px){.pitch{font-size:36px}}
 .rule{display:flex;align-items:center;justify-content:center;gap:8px;margin:14px 0 18px}
-.rule i{display:block;height:2px;width:clamp(40px,14vw,96px);background:repeating-linear-gradient(90deg,#f6b3cd 0 4px,transparent 4px 8px);opacity:.7}
-.rule b{display:block;width:6px;height:6px;background:#ffe0ec;box-shadow:0 0 0 2px var(--bg),0 0 0 4px #e284ad}
+.rule i{display:block;height:2px;width:clamp(40px,14vw,96px);background:repeating-linear-gradient(90deg,#6fbf5a 0 4px,transparent 4px 8px);opacity:.8}
+.rule b{display:block;width:6px;height:6px;background:#f2c84b;box-shadow:0 0 0 2px var(--bg),0 0 0 4px #29713c}
 .devices{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;max-width:400px}
 @media (min-width:820px){.devices{max-width:520px}}
 .devices .in{display:flex!important;flex-direction:column;align-items:center;gap:6px;padding:12px 2px 10px}
@@ -119,14 +125,14 @@ main{width:100%;padding:clamp(36px,6vh,56px) var(--pad) 0;display:flex;flex-wrap
 /* 頁尾 */
 footer{margin-top:auto;width:100%;padding:clamp(56px,10vh,96px) var(--pad) 28px;display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--mute);text-align:center}
 footer nav,footer .meta{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px 14px}
-footer a{text-decoration:none;color:#d6d0e4}
+footer a{text-decoration:none;color:#d8d1bf}
 footer a:hover{color:#fff}
 .dot{width:4px;height:4px;background:var(--mute2);display:inline-block}
 .cr{display:inline-flex;align-items:center;gap:6px}
 .copy{width:9px;height:9px;flex:none}
 
 /* 更新內容 */
-.mask{position:fixed;inset:0;z-index:60;background:rgba(10,10,20,.72);display:none;align-items:flex-end;justify-content:center;padding:16px}
+.mask{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.72);display:none;align-items:flex-end;justify-content:center;padding:16px}
 .mask.show{display:flex}
 @media (min-width:600px){.mask{align-items:center}}
 .sheet{width:100%;max-width:520px;--bw:calc(var(--u)*2)}
@@ -135,13 +141,12 @@ footer a:hover{color:#fff}
 .sheet .when{margin:0 0 14px;color:#7a6f5c}
 .sheet ul{margin:0 0 18px;padding:0;list-style:none;display:grid;gap:10px}
 .sheet li{position:relative;padding-left:16px;line-height:1.75}
-.sheet li::before{content:"";position:absolute;left:0;top:.75em;width:6px;height:6px;background:#e284ad}
+.sheet li::before{content:"";position:absolute;left:0;top:.75em;width:6px;height:6px;background:#29713c}
 </style>
 </head>
 <body>
 <header class="hero">
   <div class="scene">
-    @@cloud1@@@@cloud2@@
     @@treeBL@@@@treeBR@@
     @@treeL@@@@treeR@@
     <div class="ground"></div>
@@ -164,7 +169,7 @@ footer a:hover{color:#fff}
 
 <footer>
   <nav><a href="/privacy/">隱私權政策</a><i class="dot" aria-hidden="true"></i><a href="mailto:potatopai.0930@gmail.com">聯絡我們 potatopai.0930@gmail.com</a></nav>
-  <div class="meta"><span class="cr"><svg class="copy" viewBox="0 0 9 9" aria-hidden="true" shape-rendering="crispEdges" fill="currentColor"><path d="M2 0h5v1H2zM1 1h1v1H1zM7 1h1v1H7zM0 2h1v5H0zM8 2h1v5H8zM3 2h3v1H3zM2 3h1v3H2zM3 6h3v1H3zM1 7h1v1H1zM7 7h1v1H7zM2 8h5v1H2z"/></svg><span class="sr">©</span>2026 Potato Pai 保留所有權利</span><i class="dot" aria-hidden="true"></i><span>瀏覽 <b id="views" style="font-weight:normal;color:#d6d0e4">—</b> 次</span></div>
+  <div class="meta"><span class="cr"><svg class="copy" viewBox="0 0 9 9" aria-hidden="true" shape-rendering="crispEdges" fill="currentColor"><path d="M2 0h5v1H2zM1 1h1v1H1zM7 1h1v1H7zM0 2h1v5H0zM8 2h1v5H8zM3 2h3v1H3zM2 3h1v3H2zM3 6h3v1H3zM1 7h1v1H1zM7 7h1v1H7zM2 8h5v1H2z"/></svg><span class="sr">©</span>2026 Potato Pai 保留所有權利</span><i class="dot" aria-hidden="true"></i><span>瀏覽 <b id="views" style="font-weight:normal;color:#d8d1bf">—</b> 次</span></div>
 </footer>
 
 <div class="mask" id="mask" role="dialog" aria-modal="true" aria-labelledby="mTitle">

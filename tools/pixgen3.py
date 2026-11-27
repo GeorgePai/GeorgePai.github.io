@@ -49,14 +49,14 @@ def title_svg(lines, cls):
         base = set(cells)
         far = {(x+2, y+3) for (x, y) in base}
         near = {(x+1, y+1) for (x, y) in base}
-        body = [rects(far, "#160c2a", ' opacity=".35"'), rects(near - base, "#2a1640", ' opacity=".85"')]
+        body = [rects(far, "#000000", ' opacity=".45"'), rects(near - base, "#0e1a0d", ' opacity=".9"')]
         top = {p for p, r in cells.items() if r == 0}
         low = {p for p, r in cells.items() if r >= 7}
         mid = base - top - low
-        body += [rects(mid, "#ffffff"), rects(low, "#f1e6ff"), rects(top, "#ffffff")]
+        body += [rects(mid, "#ffffff"), rects(low, "#eef3dc"), rects(top, "#ffffff")]
         # tiny pink rim light on the left edge, bottom half
         rim = {(x, y) for (x, y) in base if (x-1, y) not in base and cells[(x, y)] >= 4}
-        body.append(rects(rim, "#ffd3e6"))
+        body.append(rects(rim, "#f6f1de"))
         out.append(f'<g class="lt" style="--i:{i}">' + ''.join(body) + '</g>')
     return (f'<svg class="{cls}" viewBox="0 0 {w} {h}" shape-rendering="crispEdges" aria-hidden="true" style="--w:{w};--h:{h}">'
             + ''.join(out) + '</svg>')
@@ -106,7 +106,7 @@ def tree_svg(cls, seed, scale_blobs=1.0):
                 ((24, 32), (12, 34), 2, 1), ((52, 30), (64, 33), 2, 1)]:
         for p in thick_line(seg[0], seg[1], seg[2], seg[3]): trunk[p] = 1
     blobs = [(20, 24, 11), (36, 16, 12), (53, 22, 12), (28, 31, 9), (46, 31, 9), (11, 32, 7), (64, 31, 7), (36, 27, 8)]
-    pal = {'sh': "#a8517f", 'base': "#e284ad", 'lt': "#f6b3cd", 'hi': "#ffe0ec", 'bark': "#3a2536", 'barkL': "#5a3a4f", 'petal': "#f6b3cd"}
+    pal = {'sh': "#2c3b24", 'base': "#4d6a3b", 'lt': "#6f9152", 'hi': "#a6c97c", 'bark': "#3d3021", 'barkL': "#5a4630", 'petal': "#6f9152"}
     rnd = random.Random(seed + 7)
     ground = {(rnd.randint(14, 62), rnd.randint(62, 65)) for _ in range(10)}
     L = blob_scene(W, H, blobs, pal, seed, trunk, ground)
